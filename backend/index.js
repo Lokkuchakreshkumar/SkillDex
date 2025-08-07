@@ -2,85 +2,90 @@ import { GoogleGenAI } from "@google/genai";
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
+import { marked} from 'marked'
+
 const app = express();
+import promptBuilder from "./prompts/promptbuilder.js";
+import masterPrompt from "./prompts/masterprompt.js";
 dotenv.config();
 app.use(cors());
 
-const ai = new GoogleGenAI({
+app.get('/new',async(req,res)=>{
+  const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY1
 });
-let prompt = `You are an expert syllabus designer. Given a course name as input, generate a complete list of topics required to master that course.Give very detailed syllabus,the user should be interested to learn the course by the syllabus also
 
-✅ Output Format:
-Return the result as a **strict JSON array** of objects. Each object must contain:
-- "title": A concise topic title
-- "description": A brief but clear explanation of the topic
 
-❌ Do not include any extra text, explanations, markdown, or code blocks.
 
-📦 Format Example:
-[
-  {
-    "title": "Topic Title",
-    "description": "Brief explanation of the topic"
-  },
-  {
-    "title": "Next Topic",
-    "description": "Another explanation"
-  }
-]
-
-🧠 Goal:
-List **only the topics**, in learning order, that are essential for fully mastering the course.
-
----
-
-Input course: CSS
-`
 
 async function main(prompt) {
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: prompt,
   });
-  console.log(response.text.replace(/```(?:json)?\s*|```/g, ''))
   return (response.text.replace(/```(?:json)?\s*|```/g, ''));
 }
 
-let syllabus = await main(prompt);
-const modularPrompt = `
-You are a professional curriculum architect.
+ let syllabus = await main(masterPrompt);
+let real = JSON.parse(syllabus)
+console.log('completed writing syllabus')
+const keys = [
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY2 }),
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY3 }),
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY4 }),
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY5 }), 
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY6 }),
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY7}),
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY8 }),
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY9 }), 
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY10 }),
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY11 }),
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY12 }),
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY13 }),
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY14 }),
+  new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY15 })
+];
 
-🎯 Task:
-Group the given syllabus into meaningful **modules**, where each module contains related topics. You must use **every single topic** from the input — do not omit or merge them.
+  
+const moduleTasks = real.map(async(obj,index)=>{
+  const actualprompt = promptBuilder(obj);
+  const indextouse = keys[index%keys.length];
+ return indextouse.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: actualprompt,
+  }).then((res)=>{
+    return{
+      index,
+      answer:res.text.replace(/```(?:json)?\s*|```/g, '')
+    }
 
-🧠 Instructions:
-- You are given an array of topics with "title" and "description".
-- Your goal is to organize them into modules based on similarity or learning progression.
-- Each module must contain 2–5 related topics.
-- You may rename modules for clarity.
-- **Do not skip or remove any topic from the input.**
-- Each topic must be placed in **exactly one module**.
-- You may shorten topic titles slightly for brevity if needed, but do not lose meaning.
+  }).catch(err=>err.message)
 
-✅ Output Format (strict JSON only, no extra text or markdown):
-[
-  {
-    "module": "Module Name",
-    "topics": [
-      { "topic": "Original or Simplified Topic Title" },
-      ...
-    ]
-  },
-  ...
-]
+});
+const results = await Promise.all(moduleTasks)
+let realmodules = {};
+for(let i = 0;i<results.length;i++){
+  let matter = results[i].answer;
+  if(matter){
+   let all_topics = matter.split(/(?=^##\s+)/gm)
+   realmodules[`${i}`] = {
+    index:i,
+    topics:all_topics
+   }
+  }else{
+    console.log('some error occured some where')
+  }
+}
+console.log(realmodules["1"].index[1]);
+const sizeInBytes = Buffer.byteLength(JSON.stringify(realmodules), 'utf8');
+const sizeInKB = sizeInBytes / 1024;
+console.log(`JSON size: ${sizeInKB.toFixed(2)} KB`);
+let final_data = marked.parse(realmodules["1"].topics[1])
+res.send(final_data)
+  
+})
 
-📦 Input Syllabus:
-${JSON.stringify(syllabus)}
-`;
 
-
-await main(modularPrompt);
 
 
 app.listen('8080',()=>{
