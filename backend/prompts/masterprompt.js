@@ -38,6 +38,6 @@ You are a professional curriculum designer and educator.
 
 💡 Goal:
 Create a syllabus that is as engaging as a YouTube playlist but as complete as a university textbook.
-🎯 Input: "CSS"
+🎯 Input: "Quantum Computing"
 `;
 export default masterPrompt;

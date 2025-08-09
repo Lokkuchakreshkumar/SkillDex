@@ -80,8 +80,8 @@ console.log(realmodules["1"].index[1]);
 const sizeInBytes = Buffer.byteLength(JSON.stringify(realmodules), 'utf8');
 const sizeInKB = sizeInBytes / 1024;
 console.log(`JSON size: ${sizeInKB.toFixed(2)} KB`);
-let final_data = marked.parse(realmodules["1"].topics[1])
-res.send(final_data)
+
+res.send(realmodules["1"].topics[1])
   
 })
 
