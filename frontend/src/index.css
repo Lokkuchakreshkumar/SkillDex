@@ -8,6 +8,29 @@ background-image:
 radial-gradient(at 80% 20%, hsla(212,100%,50%,0.2),transparent 50%),
 radial-gradient(at 20% 80% ,hsla(190,100%,50%,0.2),transparent 50%);
 }
+.new{
+background: radial-gradient(circle at top left, #121314, #050506 70%), 
+            linear-gradient(135deg, rgba(255,87,51,0.18), rgba(0,0,0,0) 70%),
+            radial-gradient(circle at bottom right, rgba(255,255,255,0.03), rgba(0,0,0,0) 80%);
+background-blend-mode: overlay, screen;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
 
 .jet {
   font-family: "JetBrains Mono", monospace;
@@ -50,4 +73,15 @@ radial-gradient(at 20% 80% ,hsla(190,100%,50%,0.2),transparent 50%);
 }
 .star{
    font-family: "Libertinus Sans", sans-serif;
+}
+::-webkit-scrollbar{
+  background-color: transparent;
+  color:white;
+  width: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, white, rgb(90, 88, 88));
+  background-size: 200% 200%;
+ 
+  border-radius: 4px;
 }

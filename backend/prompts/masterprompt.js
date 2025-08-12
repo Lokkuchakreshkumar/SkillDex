@@ -1,4 +1,5 @@
-const masterPrompt = `
+const masterPrompt =(input)=>{ 
+  return `
 You are a professional curriculum designer and educator.
 
 
@@ -38,6 +39,6 @@ You are a professional curriculum designer and educator.
 
 💡 Goal:
 Create a syllabus that is as engaging as a YouTube playlist but as complete as a university textbook.
-🎯 Input: "Quantum Computing"
-`;
+🎯 Input:${input}
+`};
 export default masterPrompt;
