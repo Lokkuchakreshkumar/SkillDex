@@ -4,6 +4,7 @@ import './index.css'
 import {createBrowserRouter,RouterProvider} from "react-router-dom"
 import App from './App.jsx'
 import Genmain from './components/ui/Generate.jsx/Genmain.jsx'
+import Login from "./components/ui/Login.jsx"
 let Router = createBrowserRouter([
   {
     path:'/',
@@ -11,6 +12,9 @@ let Router = createBrowserRouter([
   },{
     path:'/gen',
     element:<Genmain/>
+  },{
+    path:'/auth',
+    element:<Login/>
   }
 ]
 )

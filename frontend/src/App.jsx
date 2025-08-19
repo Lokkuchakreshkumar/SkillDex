@@ -1,4 +1,7 @@
 import './index.css'
+import axios from 'axios'
+import {useEffect}from "react"
+
 import Nav from './components/ui/Nav.jsx'
 import Input from './components/ui/Input.jsx'
 import Mid from './components/ui/Mid.jsx'
@@ -6,7 +9,24 @@ import Scroll from './components/ui/Scroll.jsx'
 import Faq from './components/ui/Faq.jsx'
 import Quote from './components/ui/Quote.jsx'
 import Footer from './components/ui/Footer.jsx'
+import { useNavigate } from 'react-router-dom'
 const App = () => {
+  let navigate = useNavigate();
+  useEffect(()=>{
+    let fn = async()=>{
+     const newdata = await axios.get('http://localhost:8080/',{withCredentials:true})
+     const realdata = newdata.data;
+     console.log(realdata)
+     if(!realdata){
+navigate('/auth')
+     }
+     else{
+      return;
+     }
+    }
+    fn();
+   
+  },[])
   return (
     <div className='sweep w-full min-h-screen text-white'>
    <Nav/>

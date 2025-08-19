@@ -2,15 +2,82 @@ import { GoogleGenAI } from "@google/genai";
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
-import { marked} from 'marked'
+import {Strategy as GoogleStrategy} from "passport-google-oauth20"
+import mongoose from "mongoose"
+import User from "./models/User.js"
+
+
 
 const app = express();
 import promptBuilder from "./prompts/promptbuilder.js";
 import masterPrompt from "./prompts/masterprompt.js";
+import passport from "passport";
+import session from "express-session"
 dotenv.config();
-app.use(cors());
-app.use(express.json());
+app.use(express.urlencoded({extended:true}))
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true 
+}));
+async function main() {
+  await mongoose.connect(process.env.MONGO_URI);
 
+
+}
+main().then(()=>{
+  console.log('connected');
+}).catch((err)=>{
+  console.log(err)
+})
+app.use(express.json());
+app.use(session({
+  secret:"super secret",
+  resave:false,
+   saveUninitialized: false,
+ cookie:{maxAge:14*24*60*60*1000}
+}))
+console.log(process.env.GOOGLE_CLIENT_ID);
+console.log(process.env.GOOGLE_CLIENT_SECRET)
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(function (user,done){
+  done(null,user.googleId);
+});
+passport.deserializeUser(async function(id,done){
+  let founduser = await User.findOne({googleId:id})
+  return done(null,founduser)
+});
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret:process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:8080/auth/google/callback",
+  
+},async function(accessToken,refreshToken,profile,done){
+
+ let newuser = await User.findOne({googleId:profile.id})
+try{ if(newuser){
+  console.log('user exists');
+  return done(null,newuser);
+ }
+ else{
+  let verynew = await User.create({
+    name:profile.displayName,
+    email:profile.emails[0].value,
+    googleId:profile.id
+  })
+  return done(null,verynew);
+ }
+}catch(err){
+  console.log(err)
+  done(err,null);
+}
+}))
+
+app.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}))
+app.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'/'}),(req,res)=>{
+console.log("Authentication successful! User object:", req.user);
+   res.redirect('http://localhost:5173/')
+})
 app.post('/gen',async(req,res)=>{
     console.log('New /gen request at:', new Date().toISOString());
   console.log(req.body.input)
@@ -18,7 +85,6 @@ app.post('/gen',async(req,res)=>{
     apiKey: process.env.GEMINI_API_KEY1
 });
 
-app.use(express.urlencoded({extended:true}))
 
 
 async function main(prompt) {
@@ -93,7 +159,9 @@ res.send({
   
 })
 
-
+app.get('/',(req,res)=>{
+  res.send(req.user);
+})
 app.post('/chat',async(req,res)=>{
   console.log(req.body.input)
 console.log(req.body.context);
