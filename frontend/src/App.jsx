@@ -16,12 +16,19 @@ const App = () => {
     let fn = async()=>{
      const newdata = await axios.get('http://localhost:8080/',{withCredentials:true})
      const realdata = newdata.data;
-     console.log(realdata)
-     if(!realdata){
-navigate('/auth')
+     console.log(`this is realdata: ${JSON.stringify(realdata)}`)
+     if(realdata.user == null){
+      navigate('/auth');
+     }
+     
+     if(!realdata.user){
+     navigate('/auth')
+     }
+     else if(!realdata.user.question_done){
+     navigate('/info')
      }
      else{
-      return;
+      navigate('/')
      }
     }
     fn();

@@ -14,24 +14,19 @@ background: radial-gradient(circle at top left, #121314, #050506 70%),
             radial-gradient(circle at bottom right, rgba(255,255,255,0.03), rgba(0,0,0,0) 80%);
 background-blend-mode: overlay, screen;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+.google {
+  background: 
+    linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853, #4285F4, #EA4335);
+  background-blend-mode: overlay;
+  color: #e8f0fe;
 
+  text-align: center;
+}
+.btn{
+  background:
+  linear-gradient(to bottom,yellow,rgb(255, 166, 0))
+}
 .jet {
   font-family: "JetBrains Mono", monospace;
 }

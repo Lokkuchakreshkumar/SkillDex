@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect,useRef,useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MdElectricalServices, MdKeyboardDoubleArrowUp } from "react-icons/md";
 import hljs from "highlight.js";
 import "highlight.js/styles/github-dark.css"; 
@@ -9,130 +9,128 @@ import hljsCopy from "highlightjs-copy";
 import Nav from '../Nav.jsx'
 import { RxCross2 } from "react-icons/rx";
 import Markdown from 'react-markdown'
+import { useParams } from "react-router-dom";
 
 
-const Genmain = () => {
-  let [msg,setMsg] = useState([]);
-  let [one,setOne] = useState(true)
-  let [chatinput,setChatinput] = useState('');
-  let [loading, setLoading] = useState(true);
-  let [chat,setChat] = useState(false);
-  let [content, setContent] = useState(0);
-  let [click, setClick] = useState(0);
-  let [moduleindex, setIndex] = useState(null);
-  let [real, setReal] = useState("");
-  let [mod,setModules] = useState("");
-  const location = useLocation();
-  const input = location.state?.input;
-  let handleChatInput = (e)=>{
-     setChatinput(e.target.value);
-  }
-
- let handleChat = ()=>{
-setChat(!chat);
- }
- const bottomRef = useRef(null);
- useEffect(()=>{
-  bottomRef.current?.scrollIntoView({behavior:"smooth"})
- })
- let handleCross = ()=>{
-  setChat(!chat);
- }
-  useEffect(() => {
-    const fetchdata = async () => {
-     
-      
-
-      if (input) {
-    
-        let data = await axios.post("http://localhost:8080/gen", {
-          input: input,
-        },{withCredentials:true});
-        
-        let extracted = await data.data;
-if(extracted.stop){
-  return
-}
-        let moduled = Object.values(extracted.realmodules).flatMap((obj) => {
-          return obj.topics.map((topic) => {
-            const text = new DOMParser();
-            console.log(topic);
-            const parsed = text.parseFromString(topic, "text/html");
-            let h2 = parsed.querySelector("h2")?.textContent;
-            return {
-              index: obj.index,
-              heading: h2,
-              data: topic,
-            };
-          });
-        });
-        let modules = extracted.real.map((obj, index) => {
-          return {
-            index: index,
-            modulename: obj.module,
-          };
-        });
-setModules(modules)
-  
-        console.log(`This is modules length: ${modules.length}`);
-
-        let final = [];
-        for (let i = 0; i < modules.length; i++) {
-          final.push({
-            index: i,
-            modulename: modules[i].modulename,
-            explanation: moduled.filter((obj) => obj.index === i),
-          });
-        }
-        setReal(final);
-        setContent(final[0].explanation[0]);
-        setLoading(false);
-
-      } else {
-        console.log("no input came");
-        return;
+const Course = () => {
+  let navigate= useNavigate();
+    let {id}= useParams();
+    console.log('this is id:'+id)
+      let [msg,setMsg] = useState([]);
+      let [one,setOne] = useState(true)
+      let [chatinput,setChatinput] = useState('');
+      let [loading, setLoading] = useState(true);
+      let [chat,setChat] = useState(false);
+      let [content, setContent] = useState(0);
+      let [click, setClick] = useState(0);
+      let [moduleindex, setIndex] = useState(null);
+      let [real, setReal] = useState("");
+      let [mod,setModules] = useState("");
+      const location = useLocation();
+      const input = location.state?.input;
+      let handleChatInput = (e)=>{
+         setChatinput(e.target.value);
       }
-    };
-    fetchdata();
-  }, [input]);
-  let moduleClick = (index) => {
-    let opened = index === moduleindex;
-    setIndex(opened ? null : index);
-     if(index==0 && one)
-   {
-     setClick(0)
-  setOne(false);
-   }
-else
-  setClick(null)
-  };
-  let conceptClick = (index,globeindex)=>{
-   let data =  real[globeindex].explanation[index]
-   setContent(data);
-   setClick(index)
-  }
-  useEffect(()=>{
-    let convert = ()=>{
-      hljs.addPlugin(new hljsCopy())
-     hljs.highlightAll(); 
- 
-    }
-
-    convert();
-  },[content]);
-    let handleSubmit = async(e)=>{
-
-    e.preventDefault();
-    setMsg((prev)=>[...prev,{role:'user',msg:chatinput}])
- let data = await axios.post('http://localhost:8080/chat',{input:chatinput,context:JSON.stringify(mod),history:JSON.stringify(msg)});
- let realdata = await data.data;
-  setChatinput('');
- console.log(`this is realdata:${JSON.stringify(realdata)}`)
- setMsg((prev)=>[...prev,{role:'ai',msg:realdata.answer}])
-
-  }
+    
+     let handleChat = ()=>{
+    setChat(!chat);
+     }
+     const bottomRef = useRef(null);
+     useEffect(()=>{
+      bottomRef.current?.scrollIntoView({behavior:"smooth"})
+     })
+     let handleCross = ()=>{
+      setChat(!chat);
+     }
+      useEffect(() => {
+        const fetchdata = async () => {
+          
+            let data = await axios.get(`http://localhost:8080/courses/${id}`,{withCredentials:true});
+            let extracted =  data.data;
+            if(extracted.redirect){
+navigate('/auth')
+            }
+            let x = JSON.parse(extracted.content)
+            let y = JSON.parse(extracted.syllabus)
+    console.log('this is extracted:'+ JSON.stringify(extracted))
+            let moduled = Object.values(x).flatMap((obj) => {
+              return obj?.topics?.map((topic) => {
+                const text = new DOMParser();
+                console.log(topic);
+                const parsed = text.parseFromString(topic, "text/html");
+                let h2 = parsed.querySelector("h2")?.textContent;
+                return {
+                  index: obj.index,
+                  heading: h2,
+                  data: topic,
+                };
+              });
+            });
+            console.log('type:'+typeof extracted?.syllabus)
+            let modules = y.map((obj, index) => {
+              return {
+                index: index,
+                modulename: obj.module,
+              };
+            });
+    setModules(modules)
+      
+            console.log(`This is modules length: ${modules.length}`);
+    
+            let final = [];
+            for (let i = 0; i < modules.length; i++) {
+              final.push({
+                index: i,
+                modulename: modules[i].modulename,
+                explanation: moduled.filter((obj) => obj.index === i),
+              });
+            }
+            setReal(final);
+            setContent(final[0].explanation[0]);
+            setLoading(false);
+    
+        
+        };
+        fetchdata();
+      }, [input]);
+      let moduleClick = (index) => {
+        let opened = index === moduleindex;
+        setIndex(opened ? null : index);
+         if(index==0 && one)
+       {
+         setClick(0)
+      setOne(false);
+       }
+    else
+      setClick(null)
+      };
+      let conceptClick = (index,globeindex)=>{
+       let data =  real[globeindex].explanation[index]
+       setContent(data);
+       setClick(index)
+      }
+      useEffect(()=>{
+        let convert = ()=>{
+          hljs.addPlugin(new hljsCopy())
+         hljs.highlightAll(); 
+     
+        }
+    
+        convert();
+      },[content]);
+        let handleSubmit = async(e)=>{
+    
+        e.preventDefault();
+        setMsg((prev)=>[...prev,{role:'user',msg:chatinput}])
+     let data = await axios.post('http://localhost:8080/chat',{input:chatinput,context:JSON.stringify(mod),history:JSON.stringify(msg)});
+     let realdata = await data.data;
+      setChatinput('');
+     console.log(`this is realdata:${JSON.stringify(realdata)}`)
+     setMsg((prev)=>[...prev,{role:'ai',msg:realdata.answer}])
+    
+      }
   return (
-    <div className="sm:flex w-full relative bg-[#0B0F14] sm:overflow-y-hidden min-h-screen sm:h-screen ">
+     <div className="sm:flex w-full relative  sm:overflow-y-hidden min-h-screen sm:h-screen bg-[#0B0F14]">
       {
         chat && <div className="sm:w-[30%] space w-[90%]  transition flex flex-col bg-white/10 backdrop-blur-3xl border border-gray-700
  top-15 rounded-xl items-center justify-between m-4 h-200 sm:h-[90.1%] fixed z-100   ">
@@ -155,7 +153,7 @@ else
       }
     
       {
-        !loading &&<div className="group fixed top-24 left-4"> <div onClick={handleChat} className=" sm:w-16 hover:cursor-pointer w-12 h-12  sm:h-16  flex justify-center items-center  bg-linear-to-tr from-blue-400 to-teal-800   backdrop-blur-md rounded-full ">
+        !loading &&<div className="group fixed top-25 left-4"> <div onClick={handleChat} className=" sm:w-16 hover:cursor-pointer w-12 h-12  sm:h-16  flex justify-center items-center  bg-linear-to-tr from-blue-400 to-teal-800   backdrop-blur-md rounded-full ">
 <HiMiniSparkles className=" text-2xl inline"/>
         </div>
         <div className=" bg-black rounded-2xl p-3 text- text-white my-4   opacity-0 group-hover:opacity-100 left-4 transition">Chat with SkillDex AI</div>
@@ -163,7 +161,7 @@ else
         
       }
       <Nav/>
-      <div className="sm:w-[35%] w-full overflow-y-auto h-screen  rounded-xl flex flex-col py-24 bg-[#0E1219]  gap-y-4 sm:mt-24  ">
+      <div className="sm:w-[35%] w-full overflow-y-auto h-screen  rounded-xl flex flex-col py- bg-[#0E1219]   gap-y-4 sm:mt-15  ">
         {loading && (
           <div className="animate-pulse flex   mx-4 gap-y-4  flex-col sm:mt-24 ">
             <div className="h-3 bg-slate-800 w-full rounded-full"></div>
@@ -191,10 +189,10 @@ else
             <div className="mt-8 flex flex-col w-full py-12">
               {real.map((obj, globeindex) => {
                 return (
-                  <div className="flex flex-col w-full">
+                  <div className="flex flex-col w-full ">
                     {" "}
                     <div
-                      className={`flex w-full justify-between mt-2 hover:cursor-pointer text-[#EAEFFE] p-4 ${
+                      className={`flex w-full justify-between  hover:cursor-pointer text-[#EAEFFE] p-4  mt-2 ${
                         globeindex == moduleindex
                           ? "p-4 text-center rounded-xl bg-[#221A39] hover:bg-[#171C2A] text-white"
                           : "bg-[#121621] rounded hover:bg-[#171C2A]"
@@ -234,7 +232,7 @@ else
         )}
       </div>
 
-      <div className="sm:w-[65%] mt-24 overflow-y-auto exo p-4 sm:p-8 w-full duration-500 ">
+      <div className="sm:w-[65%] mt-15 overflow-y-auto exo p-4 sm:p-8 w-full bg-[#111722] duration-500 rounded-xl ">
         {loading && (
           <div className="animate-pulse flex  m-4 mx-8 gap-y-4  flex-col sm:mt-24 ">
             <div className="h-4 bg-slate-800 rounded-full"></div>
@@ -272,7 +270,7 @@ else
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Genmain;
+export default Course
