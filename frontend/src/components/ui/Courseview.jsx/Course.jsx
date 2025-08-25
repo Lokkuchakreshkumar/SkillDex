@@ -298,7 +298,7 @@ navigate('/auth')
             </div>
                         }
               {
-              quizloading && <div className="flex justify-center items-center w-[25%] ">
+              quizloading && <div className="flex justify-center items-center w-[25%] bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
               
   <LineWave
                 visible={true}
