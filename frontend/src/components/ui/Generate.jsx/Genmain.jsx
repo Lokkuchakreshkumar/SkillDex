@@ -14,6 +14,7 @@ import Markdown from 'react-markdown'
 const Genmain = () => {
   let URL = import.meta.env.VITE_URL
   let [msg,setMsg] = useState([]);
+let [quiz, setQuiz] = useState([]); 
   let [one,setOne] = useState(true)
   let [chatinput,setChatinput] = useState('');
   let [selected,setSelected]=useState({})
@@ -285,7 +286,7 @@ else
               dangerouslySetInnerHTML={{ __html: content.data }}
               className="text-white [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
             ></div>
-             <div onClick={()=>handleQuiz(content.data)} className="p-4 hover:cursor bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
+             <div onClick={()=>handleQuiz(content.data)} className="p-4 hover:cursor-pointer bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
               Generate quiz/New
             </div>
             <div>
