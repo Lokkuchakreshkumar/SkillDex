@@ -130,6 +130,7 @@ navigate('/auth')
        setContent(data);
        setClick(index)
        setSelected({})
+       setQuiz([]);
       }
       useEffect(()=>{
         let convert = ()=>{
