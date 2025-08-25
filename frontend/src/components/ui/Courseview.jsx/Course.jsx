@@ -299,7 +299,7 @@ navigate('/auth')
                         }
               {
               quizloading && <div className="flex justify-center items-center  bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
-              <div className="flex justify-center items-center">
+              
   <LineWave
                 visible={true}
                 height="100"
@@ -312,7 +312,7 @@ navigate('/auth')
                 middleLineColor=""
                 lastLineColor=""
                 />
-              </div>
+           
               </div>
              }
             <div>
