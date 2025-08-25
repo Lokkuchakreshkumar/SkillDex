@@ -9,6 +9,7 @@ import hljsCopy from "highlightjs-copy";
 import Nav from '../Nav.jsx'
 import { RxCross2 } from "react-icons/rx";
 import Markdown from 'react-markdown'
+import { LineWave} from 'react-loader-spinner'
 
 
 const Genmain = () => {
@@ -16,6 +17,7 @@ const Genmain = () => {
   let [msg,setMsg] = useState([]);
 let [quiz, setQuiz] = useState([]); 
   let [one,setOne] = useState(true)
+  let [quizloading,setQuizLoading]=useState(false)
   let [chatinput,setChatinput] = useState('');
   let [selected,setSelected]=useState({})
   let [loading, setLoading] = useState(true);
@@ -28,6 +30,7 @@ let [quiz, setQuiz] = useState([]);
   const location = useLocation();
   const input = location.state?.input;
   let handleChatInput = (e)=>{
+   
      setChatinput(e.target.value);
   }
 
@@ -48,12 +51,15 @@ setChat(!chat);
   setChat(!chat);
  }
    let handleQuiz = async(content)=>{
+     setQuizLoading(true)
 console.log(content)
 let newdata = await axios.post(`${URL}/quiz`,{content:content},{withCredentials:true})
 let realdata = newdata.data;
 console.log('this came from backend:'+JSON.stringify(realdata))
 setQuiz(realdata);
+ setQuizLoading(false)
 setSelected({});
+
      }
   useEffect(() => {
     const fetchdata = async () => {
@@ -128,6 +134,7 @@ else
    setContent(data);
    setSelected({});
    setClick(index)
+   setQuiz([]);
   }
   useEffect(()=>{
     let convert = ()=>{
@@ -286,9 +293,33 @@ else
               dangerouslySetInnerHTML={{ __html: content.data }}
               className="text-white [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
             ></div>
-             <div onClick={()=>handleQuiz(content.data)} className="p-4 hover:cursor-pointer bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
-              Generate quiz/New
+            {
+              !quizloading &&
+            <div onClick={()=>handleQuiz(content.data)} className="p-4 hover:cursor-pointer bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
+             
+               Generate Quiz/loading
+ 
+           
             </div>
+                        }
+              {
+              quizloading && <div className="flex justify-center items-center w-[25%] ">
+              
+  <LineWave
+                visible={true}
+                height="100"
+                width="100"
+                color="#4fa94d"
+                ariaLabel="line-wave-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                firstLineColor=""
+                middleLineColor=""
+                lastLineColor=""
+                />
+           
+              </div>
+             }
             <div>
               {
           
@@ -301,10 +332,7 @@ else
                       let lower = Selected?.lowidx === lowidx;
                       let Correct =  Selected?.isCorrect;
                       return <div className="flex">
-                        
-                        
-                      
-                        
+
                         <div  onClick={()=>checkAnswer(idx,lowidx,el.isCorrect)} className={`p-2 border border-blue-500 text-blue-800 rounded cursor-pointer m-2 ${lower?(Correct?'text-green-500':'text-red-800'):''}`} >{el.text}</div>
                       </div>
                     })
