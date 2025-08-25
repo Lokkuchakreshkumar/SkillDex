@@ -6,6 +6,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import mongoose from "mongoose";
 import User from "./models/User.js";
 import ensureAuth from "./ensure.js";
+import { convert } from 'html-to-text'
 
 const app = express();
 import promptBuilder from "./prompts/promptbuilder.js";
@@ -23,13 +24,8 @@ app.use(
 async function main() {
   await mongoose.connect(process.env.MONGO_URI);
 }
-main()
-  .then(() => {
-    console.log("connected");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+
+
 app.use(express.json());
 app.use(
   session({
@@ -46,14 +42,22 @@ app.use(
 );
 console.log(process.env.GOOGLE_CLIENT_ID);
 console.log(process.env.GOOGLE_CLIENT_SECRET);
+async function fn() {
+  try {
+    await User.updateMany({ isGenerating: true }, { isGenerating: false });
+  } catch (error) {
+    console.log('failed and error is : ' + error)
+  }
+}
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.serializeUser(function (user, done) {
   done(null, user._id);
 });
 passport.deserializeUser(async (id, done) => {
-  
-  let founduser = await User.findOne({_id: id });
+
+  let founduser = await User.findOne({ _id: id });
   console.log("Found user:", founduser);
   return done(null, founduser);
 });
@@ -116,118 +120,119 @@ app.get(
     }
   }
 );
-app.get("/courses/:id",ensureAuth,async(req,res)=>{
-  console.log("id speaking:"+req.user);
- const courseid = req.params.id
- console.log('triggered')
-  if(req.user){
-    const user = await User.findOne({_id:req.user._id,"courses._id":courseid}, { "courses.$": 1 });
+app.get("/courses/:id", ensureAuth, async (req, res) => {
+  console.log("id speaking:" + req.user);
+  const courseid = req.params.id
+  console.log('triggered')
+  if (req.user) {
+    const user = await User.findOne({ _id: req.user._id, "courses._id": courseid }, { "courses.$": 1 });
     res.send(user.courses[0]);
-  }else{
+  } else {
     res.status(404).send("sorry we are unavailable now")
   }
 })
 app.post("/gen", async (req, res) => {
-  if(req.user){
+  if (req.user) {
     let user_status = await User.findById(req.user._id);
-    if(!user_status.isGenerating){
-  console.log("New /gen request at:", new Date().toISOString());
-  console.log(req.body.input);
-   user_status.isGenerating=true;
-   await user_status.save();
-  try{
-    const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY1,
-  });
+    if (!user_status.isGenerating) {
+      console.log("New /gen request at:", new Date().toISOString());
+      console.log(req.body.input);
+      user_status.isGenerating = true;
+      await user_status.save();
+      try {
+        const ai = new GoogleGenAI({
+          apiKey: process.env.GEMINI_API_KEY1,
+        });
 
-  async function main(prompt) {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-    });
-    return response.text.replace(/```(?:json)?\s*|```/g, "");
-  }
+        async function main(prompt) {
+          const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: prompt,
+          });
+          return response.text.replace(/```(?:json)?\s*|```/g, "");
+        }
 
-  let syllabus = await main(masterPrompt(req.body.input));
-  let real = JSON.parse(syllabus);
-  console.log("completed writing syllabus");
-  const keys = [
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY2 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY3 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY4 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY5 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY6 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY7 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY8 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY9 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY10 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY11 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY12 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY13 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY14 }),
-    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY15 }),
-  ];
+        let syllabus = await main(masterPrompt(req.body.input));
+        let real = JSON.parse(syllabus);
+        console.log("completed writing syllabus");
+        const keys = [
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY2 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY3 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY4 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY5 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY6 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY7 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY8 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY9 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY10 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY11 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY12 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY13 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY14 }),
+          new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY15 }),
+        ];
 
-  const moduleTasks = real.map(async (obj, index) => {
-    const actualprompt = promptBuilder(obj);
-    const indextouse = keys[index % keys.length];
-    return indextouse.models
-      .generateContent({
-        model: "gemini-2.5-flash",
-        contents: actualprompt,
-      })
-      .then((res) => {
-        return {
-          index,
-          answer: res.text.replace(/```(?:json)?\s*|```/g, ""),
-        };
-      })
-      .catch((err) => err.message);
-  });
-  const results = await Promise.all(moduleTasks);
-  let realmodules = {};
-  for (let i = 0; i < results.length; i++) {
-    let matter = results[i].answer;
-    if (matter) {
-      let all_topics = matter.split(/(?=^##\s+)/gm);
-      realmodules[`${i}`] = {
-        index: i,
-        topics: all_topics,
-      };
+        const moduleTasks = real.map(async (obj, index) => {
+          const actualprompt = promptBuilder(obj, user_status.questions);
+          console.log('this is actual prompt' + actualprompt);
+          const indextouse = keys[index % keys.length];
+          return indextouse.models
+            .generateContent({
+              model: "gemini-2.5-flash",
+              contents: actualprompt,
+            })
+            .then((res) => {
+              return {
+                index,
+                answer: res.text.replace(/```(?:json)?\s*|```/g, ""),
+              };
+            })
+            .catch((err) => err.message);
+        });
+        const results = await Promise.all(moduleTasks);
+        let realmodules = {};
+        for (let i = 0; i < results.length; i++) {
+          let matter = results[i].answer;
+          if (matter) {
+            let all_topics = matter.split(/(?=^##\s+)/gm);
+            realmodules[`${i}`] = {
+              index: i,
+              topics: all_topics,
+            };
+          } else {
+            console.log("some error occured some where");
+          }
+        }
+        console.log(realmodules);
+        const sizeInBytes = Buffer.byteLength(JSON.stringify(realmodules), "utf8");
+        const sizeInKB = sizeInBytes / 1024;
+        console.log(`JSON size: ${sizeInKB.toFixed(2)} KB`);
+        if (req.user) {
+
+
+          user_status.courses.push({
+            name: req.body.input,
+            syllabus: JSON.stringify(real),
+            content: JSON.stringify(realmodules)
+          });
+          await user_status.save();
+        }
+        res.send({
+          realmodules,
+          real,
+        });
+      } catch (err) {
+        console.log(err)
+        user_status.isGenerating = false;
+        await user_status.save();
+      } finally {
+        user_status.isGenerating = false;
+        await user_status.save();
+      }
     } else {
-      console.log("some error occured some where");
+      res.json({ stop: true });
     }
   }
-  console.log(realmodules);
-  const sizeInBytes = Buffer.byteLength(JSON.stringify(realmodules), "utf8");
-  const sizeInKB = sizeInBytes / 1024;
-  console.log(`JSON size: ${sizeInKB.toFixed(2)} KB`);
-if(req.user){
-  
-
-user_status.courses.push({
-  name:req.body.input,
-  syllabus: JSON.stringify(real),
-  content: JSON.stringify(realmodules)
-});
-await user_status.save();
-}
-  res.send({
-    realmodules,
-    real,
-  });
-  }catch(err){
-    console.log(err)
-    user_status.isGenerating=false;
-    await user_status.save();
-  }finally{
-    user_status.isGenerating=false;
-    await user_status.save();
-  }
-}else{
-  res.json({stop:true});
-}
-}
 });
 
 app.get("/", (req, res) => {
@@ -259,9 +264,71 @@ app.post("/chat", async (req, res) => {
   let toreturn = await main(prompt);
   res.json({ answer: toreturn });
 });
-app.post('/dashboard',async(req,res)=>{
+app.post('/dashboard', async (req, res) => {
   res.send('dashboard')
 })
-app.listen("8080", () => {
+
+app.post('/quiz', async (req, res) => {
+  console.log(req.body.content)
+  const text = convert(req.body.content)
+  const keys = [
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY2 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY3 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY4 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY5 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY6 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY7 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY8 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY9 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY10 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY11 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY12 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY13 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY14 }),
+    new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY15 }),
+  ];
+  let index = Math.floor(Math.random() * keys.length)
+  let quiz_prompt = `Your an quiz generator based on the content given to you ,you generate at max 5 questions in json format 
+format:
+[
+  {
+    "question": "What is xyz?",
+    "options": [
+      { "text": "x", "isCorrect": false },
+      { "text": "y", "isCorrect": false },
+      { "text": "z", "isCorrect": false },
+      { "text": "xyz", "isCorrect": true }
+    ]
+  },
+  {
+    "question": "Which language runs in a browser?",
+    "options": [
+      { "text": "Python", "isCorrect": false },
+      { "text": "Java", "isCorrect": false },
+      { "text": "C++", "isCorrect": false },
+      { "text": "JavaScript", "isCorrect": true }
+    ]
+  }
+]
+
+
+Generate quiz on this topic: ${text}`
+  console.log(index)
+  let model = keys[index]
+  const response = await model.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: quiz_prompt,
+  });
+
+  res.send(response.text.replace(/```(?:json)?\s*|```/g, ""))
+})
+
+
+
+app.listen("8080", async () => {
+
+  await main(); await fn();
   console.log("app is listening");
 });
+
+

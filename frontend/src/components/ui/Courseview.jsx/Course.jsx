@@ -15,8 +15,11 @@ import { useParams } from "react-router-dom";
 const Course = () => {
   let navigate= useNavigate();
     let {id}= useParams();
+    
     console.log('this is id:'+id)
       let [msg,setMsg] = useState([]);
+      let [quiz,setQuiz]=useState([]);
+      let [selected,setSelected]=useState({})
       let [one,setOne] = useState(true)
       let [chatinput,setChatinput] = useState('');
       let [loading, setLoading] = useState(true);
@@ -31,9 +34,15 @@ const Course = () => {
       let handleChatInput = (e)=>{
          setChatinput(e.target.value);
       }
-    
+
      let handleChat = ()=>{
     setChat(!chat);
+     }
+     let checkAnswer = (idx,lowidx,isCorrect)=>{
+      setSelected((prev)=>({
+        ...prev,[idx]:{lowidx,isCorrect}
+      }))
+      console.log(selected)
      }
      const bottomRef = useRef(null);
      useEffect(()=>{
@@ -41,6 +50,14 @@ const Course = () => {
      })
      let handleCross = ()=>{
       setChat(!chat);
+     }
+     let handleQuiz = async(content)=>{
+console.log(content)
+let newdata = await axios.post('http://localhost:8080/quiz',{content:content},{withCredentials:true})
+let realdata = newdata.data;
+console.log('this came from backend:'+JSON.stringify(realdata))
+setQuiz(realdata);
+setSelected({});
      }
       useEffect(() => {
         const fetchdata = async () => {
@@ -161,7 +178,7 @@ navigate('/auth')
         
       }
       <Nav/>
-      <div className="sm:w-[35%] w-full overflow-y-auto h-screen  rounded-xl flex flex-col py- bg-[#0E1219]   gap-y-4 sm:mt-15  ">
+      <div className="sm:w-[35%] w-full overflow-y-auto py-8  rounded-xl flex flex-col  bg-[#0E1219]   gap-y-4 sm:mt-15  ">
         {loading && (
           <div className="animate-pulse flex   mx-4 gap-y-4  flex-col sm:mt-24 ">
             <div className="h-3 bg-slate-800 w-full rounded-full"></div>
@@ -182,7 +199,7 @@ navigate('/auth')
           </div>
         )}
         {!loading && (
-          <div className="text-white p-8 w-full ">
+          <div className="text-white pt-24 w-full ">
             <div className="text-3xl text-center w-full exo">
               Course Outline
             </div>
@@ -261,11 +278,38 @@ navigate('/auth')
           </div>
         )}
         {!loading && (
-          <div className="flex justify-center items-center text-lg p-4">
+          <div className="flex flex-col justify-center items-center text-lg p-4">
             <div
               dangerouslySetInnerHTML={{ __html: content.data }}
               className="text-white [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
             ></div>
+            <div onClick={()=>handleQuiz(content.data)} className="p-4 bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
+              Generate quiz
+            </div>
+            <div>
+              {
+          
+                 quiz.map((el,idx)=>{
+                  return <div>
+                    <div className="text-amber-500 my-4">{idx+1}.{el.question}</div>
+                   {
+                    el.options.map((el,lowidx)=>{
+                      let Selected = selected[idx]
+                      let lower = Selected?.lowidx === lowidx;
+                      let Correct =  Selected?.isCorrect;
+                      return <div className="flex">
+                        
+                        
+                      
+                        
+                        <div  onClick={()=>checkAnswer(idx,lowidx,el.isCorrect)} className={`p-2 border border-blue-500 text-blue-800 rounded cursor-pointer m-2 ${lower?(Correct?'text-green-500':'text-red-800'):''}`} >{el.text}</div>
+                      </div>
+                    })
+                   }
+                  </div>
+                 })
+              }
+            </div>
           </div>
         )}
       </div>

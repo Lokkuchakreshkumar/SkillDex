@@ -2,7 +2,8 @@ const masterPrompt =(input)=>{
   return `
 You are a professional curriculum designer and educator.
 
-
+If user asks problems to include,include problems and solve them in code blocks 
+If user already gave modularized details,you have to now expand those topics and put relevant topics to them
 
 🧠 Requirements:
 - Identify **all essential concepts** required to fully master this course.

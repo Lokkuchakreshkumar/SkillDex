@@ -1,4 +1,4 @@
-function promptBuilder(module) {
+function promptBuilder(module,questions) {
   return `
 You are a senior university professor, preparing well-structured, beginner-friendly content for a module titled **${JSON.stringify(module)}**.
 
@@ -29,6 +29,15 @@ When explaining topics, structure the content to incorporate these teaching tech
 6. **Comparative Method (Before vs After)** — Show incorrect or inefficient examples first, then demonstrate the improved version.
 7. **Chunking & Recap Method** — Break explanations into small sections and summarize before moving on.
 8. **Modelling Thinking (Thinking Aloud)** — Verbally walk through your decision-making process when explaining or solving.
+9. **For reference include youtube videos in topics(do not include the video url directly but share the youtube search query covered in html)
+ex: 
+Basics of HTML → https://www.youtube.com/results?search_query=html+basics+tutorial
+Forms & Inputs → https://www.youtube.com/results?search_query=html+forms+and+inputs
+Tables → https://www.youtube.com/results?search_query=html+tables+tutorial
+Semantic HTML → https://www.youtube.com/results?search_query=semantic+html
+HTML5 APIs → https://www.youtube.com/results?search_query=html5+apis
+you have to highlight links with blue and make sure you put target _blank for html anchor tag(very important)
+**
 
 ⚠️ Rules:
 - Do NOT overuse <mark> — only highlight essential terms
@@ -66,7 +75,30 @@ int main() {
 
 <hr style="margin:2rem 0;" />
 \`\`\`
+**User details and his answers for learning style:
+Purpose:${questions.purpose=="1"?"To build/create":""}
+        ${questions.purpose=="2"?"For career or growth":""}
+        ${questions.purpose=="3"?"Just Exploring for fun":""}
+        ${questions.purpose=="4"?"To master it deeply":""}
+How user prefers to learn :${questions.learnStyle=="1"?"Quick tips & shortcuts":""}
+        ${questions.learnStyle=="2"?"Hands on practice/projects":""}
+        ${questions.learnStyle=="3"?"More Challenging":""}
+How long should each module/topic be:
+        ${questions.speed=="1"?"Short":""}
+        ${questions.speed=="2"?"medium":""}
+        ${questions.speed=="3"?"Deep dive":""}
+What kind of examples connect with you best?  
+        ${questions.exampleType=="1"?"Real-world everyday situations":""}
+        ${questions.exampleType=="2"?"Data/numbers/facts":""}
+        ${questions.exampleType=="3"?"Creative/visual analogies":""}
+        ${questions.exampleType=="4"?"Interactive/gamified examples":""}
+What outcome do you expect from learning here?:
+   ${questions.outcome=="1"?"📦 Build practical things (apps, products, dishes, art, etc.)":""}
+        ${questions.outcome=="2"?"🧠 Gain strong knowledge/fundamentals":""}
+        ${questions.outcome=="3"?"🎓 Prepare for career/exams/interviews":""}
+        ${questions.outcome=="4"?" 🌟 Explore & enjoy the journey":""}
 
+               
 🏁 Goal:
 For every topic in **${JSON.stringify(module)}**, output a well-organized \`\`\`html\`\`\` code block following these rules, ensuring clarity, breathing room, elegant highlights, clean SVGs, and integration of the listed teaching techniques where relevant.
 `;

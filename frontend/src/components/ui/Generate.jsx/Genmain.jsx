@@ -268,6 +268,7 @@ else
               dangerouslySetInnerHTML={{ __html: content.data }}
               className="text-white [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
             ></div>
+           
           </div>
         )}
       </div>
