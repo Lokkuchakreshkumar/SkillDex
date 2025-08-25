@@ -290,7 +290,7 @@ navigate('/auth')
             ></div>
             {
               !quizloading &&
-            <div onClick={()=>handleQuiz(content.data)} className="p-4 hover:cursor bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
+            <div onClick={()=>handleQuiz(content.data)} className="p-4 hover:cursor-pointer bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
              
                Generate Quiz/loading
  
