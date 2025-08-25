@@ -4,6 +4,7 @@ import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 import image from "../../assets/Adobe Express - file (3).png"  
 import { useNavigate } from "react-router-dom";
 const Info = () => {
+  let URL = import.meta.env.VITE_URL
   const [formData,setFormData] = useState({
     purpose:"1",
     learnStyle:"1",
@@ -19,7 +20,7 @@ const Info = () => {
   let handleForm = async(e)=>{
     e.preventDefault();
     console.log(formData)
-    let newdata = await axios.post('http://localhost:8080/update',formData,{withCredentials:true});
+    let newdata = await axios.post(`${URL}/update`,formData,{withCredentials:true});
     let data =await newdata.data
     console.log(data)
     if(data.success){

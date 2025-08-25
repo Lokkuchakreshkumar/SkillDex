@@ -114,9 +114,9 @@ app.get(
   (req, res) => {
     console.log("Authentication successful! User object:", req.user);
     if (req.user.question_done) {
-      res.redirect("http://localhost:5173/");
+      res.redirect("https://myskilldex.vercel.app/");
     } else {
-      res.redirect("http://localhost:5173/info");
+      res.redirect("https://myskilldex.vercel.app/info");
     }
   }
 );
