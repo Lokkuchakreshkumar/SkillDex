@@ -333,7 +333,7 @@ else
                       let Correct =  Selected?.isCorrect;
                       return <div className="flex">
 
-                        <div  onClick={()=>checkAnswer(idx,lowidx,el.isCorrect)} className={`p-2 border border-blue-500 text-blue-800 rounded cursor-pointer m-2 ${lower?(Correct?'text-green-500':'text-red-800'):''}`} >{el.text}</div>
+                        <div  onClick={()=>checkAnswer(idx,lowidx,el.isCorrect)} className={`p-2 border border-blue-500 text-blue-400 rounded cursor-pointer m-2 ${lower?(Correct?'text-green-500':'text-red-800'):''}`} >{el.text}</div>
                       </div>
                     })
                    }
