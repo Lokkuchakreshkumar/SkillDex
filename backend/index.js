@@ -9,6 +9,7 @@ import ensureAuth from "./ensure.js";
 import { convert } from 'html-to-text'
 
 const app = express();
+app.set('trust proxy', 1);
 import promptBuilder from "./prompts/promptbuilder.js";
 import masterPrompt from "./prompts/masterprompt.js";
 import passport from "passport";
