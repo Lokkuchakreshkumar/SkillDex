@@ -58,7 +58,6 @@ Welcome <span className='text-cyan-600 ml-2 text-4xl mt-4'>{data.name} !</span>
   color="#4fa94d"
   ariaLabel="line-wave-loading"
   wrapperStyle={{}}
-  wrapperClass=""
   firstLineColor=""
   middleLineColor=""
   lastLineColor=""
