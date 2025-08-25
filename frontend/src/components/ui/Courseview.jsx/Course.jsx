@@ -289,16 +289,18 @@ navigate('/auth')
               className="text-white [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
             ></div>
             {
+              !quizloading &&
             <div onClick={()=>handleQuiz(content.data)} className="p-4 hover:cursor bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
              
-              !quizloading && <div>Generate Quiz/loading</div>
+               Generate Quiz/loading
  
            
             </div>
                         }
               {
               quizloading && <div className="flex justify-center items-center  bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
-                <LineWave
+              <div className="flex justify-center items-center">
+  <LineWave
                 visible={true}
                 height="100"
                 width="100"
@@ -310,6 +312,7 @@ navigate('/auth')
                 middleLineColor=""
                 lastLineColor=""
                 />
+              </div>
               </div>
              }
             <div>
