@@ -24,7 +24,7 @@ const Course = () => {
       let [one,setOne] = useState(true)
       let [chatinput,setChatinput] = useState('');
       let [loading, setLoading] = useState(true);
-      let [quizloading,setQuizLoading] = useState(true);
+      let [quizloading,setQuizLoading] = useState(false);
       let [chat,setChat] = useState(false);
       let [content, setContent] = useState(0);
       let [click, setClick] = useState(0);
@@ -54,6 +54,7 @@ const Course = () => {
       setChat(!chat);
      }
      let handleQuiz = async(content)=>{
+      setQuizLoading(true)
 console.log(content)
 let newdata = await axios.post(`${URL}/quiz`,{content:content},{withCredentials:true})
 let realdata = newdata.data;
@@ -289,10 +290,10 @@ navigate('/auth')
             ></div>
             <div onClick={()=>handleQuiz(content.data)} className="p-4 hover:cursor bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
              {
-              !loading && <div>Generate Quiz/loading</div>
+              !quizloading && <div>Generate Quiz/loading</div>
              }
              {
-              loading && <LineWave
+              quizloading && <LineWave
                 visible={true}
                 height="100"
                 width="100"
