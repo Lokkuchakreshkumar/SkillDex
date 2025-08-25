@@ -40,7 +40,7 @@ const App = () => {
    
   },[])
   return (
-<div  className='sweep w-full min-h-screen text-white'>
+<div>
       {
       !loading && 
   <div className='sweep w-full min-h-screen text-white'>
