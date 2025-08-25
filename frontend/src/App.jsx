@@ -1,6 +1,6 @@
 import './index.css'
 import axios from 'axios'
-import {useEffect}from "react"
+import {useEffect,useState}from "react"
 import { LineWave} from 'react-loader-spinner'
 
 import Nav from './components/ui/Nav.jsx'
