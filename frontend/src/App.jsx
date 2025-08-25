@@ -1,6 +1,7 @@
 import './index.css'
 import axios from 'axios'
 import {useEffect}from "react"
+import { LineWave} from 'react-loader-spinner'
 
 import Nav from './components/ui/Nav.jsx'
 import Input from './components/ui/Input.jsx'
@@ -11,12 +12,15 @@ import Quote from './components/ui/Quote.jsx'
 import Footer from './components/ui/Footer.jsx'
 import { useNavigate } from 'react-router-dom'
 const App = () => {
+    let [loading,setLoading] = useState(true);
   let URL = import.meta.env.VITE_URL
   let navigate = useNavigate();
   useEffect(()=>{
+
     let fn = async()=>{
      const newdata = await axios.get(`${URL}/`,{withCredentials:true})
      const realdata = newdata.data;
+     setLoading(!loading);
      console.log(`this is realdata: ${JSON.stringify(realdata)}`)
      if(realdata.user == null){
       navigate('/auth');
@@ -36,7 +40,9 @@ const App = () => {
    
   },[])
   return (
-    <div className='sweep w-full min-h-screen text-white'>
+  <div className='sweep flex flex-col justify-center items-center'>
+{
+  !loading && <div> <div className='sweep w-full min-h-screen text-white'>
    <Nav/>
    <div className='pt-32 flex flex-col items-center   '>
     <div className='text-3xl  text-center sm:text-7xl p-4 space  tracking-tighter font-extrabold bg-clip-text text-transparent bg-linear-to-b from-white to-[#9c9a9a]'>Learn anything,Instantly</div>
@@ -53,7 +59,26 @@ const App = () => {
    </div>
    
 
-   </div>
+   </div></div>
+   }
+   {
+    loading && <div className='sweep flex flex-col justify-center items-center'>
+         <div>If it's been loading ,it's because we are running on free servers</div>
+        <div className='h-screen flex justify-center items-center'><LineWave
+          visible={true}
+          height="100"
+          width="100"
+          color="#4fa94d"
+          ariaLabel="line-wave-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          firstLineColor=""
+          middleLineColor=""
+          lastLineColor=""
+          /></div>
+    </div>
+   }
+  </div>
   )
 }
 
