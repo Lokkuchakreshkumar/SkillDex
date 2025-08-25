@@ -17,7 +17,7 @@ dotenv.config();
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "https://skilldex.onrender.com",
+    origin: "https://myskilldex.vercel.app",
     credentials: true,
   })
 );
