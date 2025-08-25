@@ -151,7 +151,7 @@ navigate('/auth')
      <div className="sm:flex w-full relative  sm:overflow-y-hidden min-h-screen sm:h-screen bg-[#0B0F14]">
       {
         chat && <div className="sm:w-[30%] space w-[90%]  transition flex flex-col bg-white/10 backdrop-blur-3xl border border-gray-700
- top-15 rounded-xl items-center justify-between m-4 h-200 sm:h-[90.1%] fixed z-100   ">
+ top-15 rounded-xl items-center justify-between m-4 h-199 sm:h-[90.1%] fixed z-100   ">
        <div  className="flex w-full  justify-end  p-4"><RxCross2 onClick={handleCross} className="inline text-xl text-white hover:cursor-pointer"/></div>
       <div className="overflow-y-auto flex flex-col w-full">
  {
