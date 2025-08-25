@@ -40,9 +40,9 @@ const App = () => {
    
   },[])
   return (
-  <div className='sweep flex flex-col justify-center items-center'>
+  <div>
 {
-  !loading && <div> <div className='sweep w-full min-h-screen text-white'>
+  !loading &&  <div className='sweep w-full min-h-screen text-white'>
    <Nav/>
    <div className='pt-32 flex flex-col items-center   '>
     <div className='text-3xl  text-center sm:text-7xl p-4 space  tracking-tighter font-extrabold bg-clip-text text-transparent bg-linear-to-b from-white to-[#9c9a9a]'>Learn anything,Instantly</div>
@@ -59,7 +59,7 @@ const App = () => {
    </div>
    
 
-   </div></div>
+   </div>
    }
    {
     loading && <div className='sweep flex flex-col justify-center items-center'>
