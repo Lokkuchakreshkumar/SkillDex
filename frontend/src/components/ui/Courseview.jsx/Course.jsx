@@ -292,8 +292,10 @@ navigate('/auth')
              {
               !quizloading && <div>Generate Quiz/loading</div>
              }
-             {
-              quizloading && <div className="flex justify-center items-center">
+           
+            </div>
+              {
+              quizloading && <div className="flex justify-center items-center  bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
                 <LineWave
                 visible={true}
                 height="100"
@@ -308,7 +310,6 @@ navigate('/auth')
                 />
               </div>
              }
-            </div>
             <div>
               {
           
