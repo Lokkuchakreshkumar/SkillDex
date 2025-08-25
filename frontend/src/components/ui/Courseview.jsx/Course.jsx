@@ -179,7 +179,7 @@ navigate('/auth')
         
       }
       <Nav/>
-      <div className="sm:w-[35%] w-full overflow-y-auto py-8  rounded-xl flex flex-col  bg-[#0E1219]   gap-y-4 sm:mt-15  ">
+      <div className="sm:w-[35%] w-full overflow-y-auto py-8 p-4 rounded-xl flex flex-col  bg-[#0E1219]   gap-y-4 sm:mt-15  ">
         {loading && (
           <div className="animate-pulse flex   mx-4 gap-y-4  flex-col sm:mt-24 ">
             <div className="h-3 bg-slate-800 w-full rounded-full"></div>
