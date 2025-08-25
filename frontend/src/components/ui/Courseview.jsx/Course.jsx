@@ -60,7 +60,7 @@ let newdata = await axios.post(`${URL}/quiz`,{content:content},{withCredentials:
 let realdata = newdata.data;
 console.log('this came from backend:'+JSON.stringify(realdata))
 setQuiz(realdata);
-setQuizLoading(!quizloading)
+setQuizLoading(false)
 setSelected({});
      }
       useEffect(() => {
@@ -293,7 +293,8 @@ navigate('/auth')
               !quizloading && <div>Generate Quiz/loading</div>
              }
              {
-              quizloading && <LineWave
+              quizloading && <div className="flex justify-center items-center">
+                <LineWave
                 visible={true}
                 height="100"
                 width="100"
@@ -305,6 +306,7 @@ navigate('/auth')
                 middleLineColor=""
                 lastLineColor=""
                 />
+              </div>
              }
             </div>
             <div>
