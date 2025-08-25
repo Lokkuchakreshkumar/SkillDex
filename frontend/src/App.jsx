@@ -40,10 +40,11 @@ const App = () => {
    
   },[])
   return (
-  <div >
+<div  className='sweep w-full min-h-screen text-white'>
       {
-      !loading && <div className='sweep w-full min-h-screen text-white'>
-   <Nav/>
+      !loading && 
+  <div className='sweep w-full min-h-screen text-white'>
+     <Nav/>
    <div className='pt-32 flex flex-col items-center   '>
     <div className='text-3xl  text-center sm:text-7xl p-4 space  tracking-tighter font-extrabold bg-clip-text text-transparent bg-linear-to-b from-white to-[#9c9a9a]'>Learn anything,Instantly</div>
    <div className='text-white/65 px-6 sm:text-lg text-sm text-center '>One tool. One path. All the clarity you’ve been missing.</div>
@@ -57,9 +58,10 @@ const App = () => {
   <div className='border border-slate-500 w-[95%] mt-24'></div>
   <Footer/>
    </div>
+  </div>
    
 
-   </div>
+ 
     }
     {
       !loading && <div className='flex flex-col sweep justify-center items-center'>
@@ -77,8 +79,8 @@ const App = () => {
         /></div>
       </div>
     }
+ 
   </div>
-
 
   )
 }
