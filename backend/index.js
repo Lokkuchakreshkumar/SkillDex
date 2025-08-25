@@ -58,7 +58,7 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(async (id, done) => {
 
   let founduser = await User.findOne({ _id: id });
-  console.log("Found user:", founduser);
+  console.log("Found user:");
   return done(null, founduser);
 });
 
@@ -92,7 +92,7 @@ passport.use(
   )
 );
 app.post("/update", async (req, res) => {
-  console.log(req.user);
+ console.log('in update route')
   try {
     req.user.questions = req.body;
 
@@ -112,7 +112,7 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
-    console.log("Authentication successful! User object:", req.user);
+    console.log("Authentication successful!");
     if (req.user.question_done) {
       res.redirect("https://myskilldex.vercel.app/");
     } else {
@@ -121,7 +121,7 @@ app.get(
   }
 );
 app.get("/courses/:id", ensureAuth, async (req, res) => {
-  console.log("id speaking:" + req.user);
+  console.log("id speaking");
   const courseid = req.params.id
   console.log('triggered')
   if (req.user) {
