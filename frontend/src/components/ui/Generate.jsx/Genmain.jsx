@@ -16,6 +16,7 @@ const Genmain = () => {
   let [msg,setMsg] = useState([]);
   let [one,setOne] = useState(true)
   let [chatinput,setChatinput] = useState('');
+  let [selected,setSelected]=useState({})
   let [loading, setLoading] = useState(true);
   let [chat,setChat] = useState(false);
   let [content, setContent] = useState(0);
@@ -32,6 +33,12 @@ const Genmain = () => {
  let handleChat = ()=>{
 setChat(!chat);
  }
+  let checkAnswer = (idx,lowidx,isCorrect)=>{
+      setSelected((prev)=>({
+        ...prev,[idx]:{lowidx,isCorrect}
+      }))
+      console.log(selected)
+     }
  const bottomRef = useRef(null);
  useEffect(()=>{
   bottomRef.current?.scrollIntoView({behavior:"smooth"})
@@ -39,6 +46,14 @@ setChat(!chat);
  let handleCross = ()=>{
   setChat(!chat);
  }
+   let handleQuiz = async(content)=>{
+console.log(content)
+let newdata = await axios.post(`${URL}/quiz`,{content:content},{withCredentials:true})
+let realdata = newdata.data;
+console.log('this came from backend:'+JSON.stringify(realdata))
+setQuiz(realdata);
+setSelected({});
+     }
   useEffect(() => {
     const fetchdata = async () => {
      
@@ -110,6 +125,7 @@ else
   let conceptClick = (index,globeindex)=>{
    let data =  real[globeindex].explanation[index]
    setContent(data);
+   setSelected({});
    setClick(index)
   }
   useEffect(()=>{
@@ -269,6 +285,33 @@ else
               dangerouslySetInnerHTML={{ __html: content.data }}
               className="text-white [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
             ></div>
+             <div onClick={()=>handleQuiz(content.data)} className="p-4 hover:cursor bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
+              Generate quiz/New
+            </div>
+            <div>
+              {
+          
+                 quiz.map((el,idx)=>{
+                  return <div>
+                    <div className="text-amber-500 my-4">{idx+1}.{el.question}</div>
+                   {
+                    el.options.map((el,lowidx)=>{
+                      let Selected = selected[idx]
+                      let lower = Selected?.lowidx === lowidx;
+                      let Correct =  Selected?.isCorrect;
+                      return <div className="flex">
+                        
+                        
+                      
+                        
+                        <div  onClick={()=>checkAnswer(idx,lowidx,el.isCorrect)} className={`p-2 border border-blue-500 text-blue-800 rounded cursor-pointer m-2 ${lower?(Correct?'text-green-500':'text-red-800'):''}`} >{el.text}</div>
+                      </div>
+                    })
+                   }
+                  </div>
+                 })
+              }
+            </div>
            
           </div>
         )}
