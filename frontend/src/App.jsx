@@ -1,6 +1,6 @@
 import './index.css'
 import axios from 'axios'
-import {useEffect,useState}from "react"
+import {useEffect}from "react"
 import { LineWave} from 'react-loader-spinner'
 
 import Nav from './components/ui/Nav.jsx'
@@ -40,9 +40,9 @@ const App = () => {
    
   },[])
   return (
-  <div>
-{
-  !loading &&  <div className='sweep w-full min-h-screen text-white'>
+  <div >
+      {
+      !loading && <div className='sweep w-full min-h-screen text-white'>
    <Nav/>
    <div className='pt-32 flex flex-col items-center   '>
     <div className='text-3xl  text-center sm:text-7xl p-4 space  tracking-tighter font-extrabold bg-clip-text text-transparent bg-linear-to-b from-white to-[#9c9a9a]'>Learn anything,Instantly</div>
@@ -60,25 +60,26 @@ const App = () => {
    
 
    </div>
-   }
-   {
-    loading && <div className='sweep flex flex-col justify-center items-center'>
-         <div>If it's been loading ,it's because we are running on free servers</div>
-        <div className='h-screen flex justify-center items-center'><LineWave
-          visible={true}
-          height="100"
-          width="100"
-          color="#4fa94d"
-          ariaLabel="line-wave-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-          firstLineColor=""
-          middleLineColor=""
-          lastLineColor=""
-          /></div>
-    </div>
-   }
+    }
+    {
+      !loading && <div className='flex flex-col sweep justify-center items-center'>
+         <div className='h-screen flex justify-center items-center'><LineWave
+        visible={true}
+        height="100"
+        width="100"
+        color="#4fa94d"
+        ariaLabel="line-wave-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        firstLineColor=""
+        middleLineColor=""
+        lastLineColor=""
+        /></div>
+      </div>
+    }
   </div>
+
+
   )
 }
 
