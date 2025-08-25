@@ -64,7 +64,7 @@ const App = () => {
  
     }
     {
-      !loading && <div className='flex flex-col sweep justify-center items-center'>
+      loading && <div className='flex flex-col sweep justify-center items-center'>
          <div className='h-screen flex justify-center items-center'><LineWave
         visible={true}
         height="100"
