@@ -10,6 +10,7 @@ import Nav from '../Nav.jsx'
 import { RxCross2 } from "react-icons/rx";
 import Markdown from 'react-markdown'
 import { useParams } from "react-router-dom";
+import { LineWave} from 'react-loader-spinner'
 
 
 const Course = () => {
@@ -23,6 +24,7 @@ const Course = () => {
       let [one,setOne] = useState(true)
       let [chatinput,setChatinput] = useState('');
       let [loading, setLoading] = useState(true);
+      let [quizloading,setQuizLoading] = useState(true);
       let [chat,setChat] = useState(false);
       let [content, setContent] = useState(0);
       let [click, setClick] = useState(0);
@@ -57,6 +59,7 @@ let newdata = await axios.post(`${URL}/quiz`,{content:content},{withCredentials:
 let realdata = newdata.data;
 console.log('this came from backend:'+JSON.stringify(realdata))
 setQuiz(realdata);
+setQuizLoading(!quizloading)
 setSelected({});
      }
       useEffect(() => {
@@ -285,7 +288,23 @@ navigate('/auth')
               className="text-white [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
             ></div>
             <div onClick={()=>handleQuiz(content.data)} className="p-4 hover:cursor bg-linear-to-r from-violet-600 to-blue-700 rounded-3xl">
-              Generate quiz/New
+             {
+              !loading && <div>Generate Quiz/loading</div>
+             }
+             {
+              loading && <LineWave
+                visible={true}
+                height="100"
+                width="100"
+                color="#4fa94d"
+                ariaLabel="line-wave-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                firstLineColor=""
+                middleLineColor=""
+                lastLineColor=""
+                />
+             }
             </div>
             <div>
               {
