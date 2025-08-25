@@ -12,6 +12,7 @@ import Markdown from 'react-markdown'
 
 
 const Genmain = () => {
+  let URL = import.meta.env.VITE_URL
   let [msg,setMsg] = useState([]);
   let [one,setOne] = useState(true)
   let [chatinput,setChatinput] = useState('');
@@ -45,7 +46,7 @@ setChat(!chat);
 
       if (input) {
     
-        let data = await axios.post("http://localhost:8080/gen", {
+        let data = await axios.post(`${URL}/gen`, {
           input: input,
         },{withCredentials:true});
         
@@ -124,7 +125,7 @@ else
 
     e.preventDefault();
     setMsg((prev)=>[...prev,{role:'user',msg:chatinput}])
- let data = await axios.post('http://localhost:8080/chat',{input:chatinput,context:JSON.stringify(mod),history:JSON.stringify(msg)});
+ let data = await axios.post(`${URL}/chat`,{input:chatinput,context:JSON.stringify(mod),history:JSON.stringify(msg)});
  let realdata = await data.data;
   setChatinput('');
  console.log(`this is realdata:${JSON.stringify(realdata)}`)

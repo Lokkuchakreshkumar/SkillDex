@@ -8,10 +8,11 @@ import { useNavigate } from "react-router-dom";
 const Nav = (addr) => {
   let [link,setLink] = useState('')
   let [profile,setProfile] = useState(false)
+  let URL = import.meta.env.VITE_URL
   let navigate = useNavigate();
   useEffect(()=>{
     async function fn(){
-   let data = await axios.get('http://localhost:8080/',{withCredentials:true})
+   let data = await axios.get(`${URL}/`,{withCredentials:true})
   let realdata = data.data;
   if(realdata.user.profilePic){
     setLink(realdata.user.profilePic)

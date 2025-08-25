@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 const Dashboard = () => {
+  let URL = import.meta.env.VITE_URL
   let navigate = useNavigate();
   let [data,setData] = useState({});
   let [loading,setLoading]=useState(true);
@@ -14,7 +15,7 @@ navigate(`/courses/${id}`)
 }
   useEffect(()=>{
     async function fn(){
-let first = await axios.get('http://localhost:8080/',{withCredentials:true})
+let first = await axios.get(`${URL}/`,{withCredentials:true})
   let result = first.data;
   setData(result.user);
   setLoading(false)

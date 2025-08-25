@@ -11,10 +11,11 @@ import Quote from './components/ui/Quote.jsx'
 import Footer from './components/ui/Footer.jsx'
 import { useNavigate } from 'react-router-dom'
 const App = () => {
+  let URL = import.meta.env.VITE_URL
   let navigate = useNavigate();
   useEffect(()=>{
     let fn = async()=>{
-     const newdata = await axios.get('http://localhost:8080/',{withCredentials:true})
+     const newdata = await axios.get(`${URL}/`,{withCredentials:true})
      const realdata = newdata.data;
      console.log(`this is realdata: ${JSON.stringify(realdata)}`)
      if(realdata.user == null){

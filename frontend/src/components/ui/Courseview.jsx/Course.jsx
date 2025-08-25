@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom";
 const Course = () => {
   let navigate= useNavigate();
     let {id}= useParams();
-    
+  let URL = import.meta.env.VITE_URL
     console.log('this is id:'+id)
       let [msg,setMsg] = useState([]);
       let [quiz,setQuiz]=useState([]);
@@ -53,7 +53,7 @@ const Course = () => {
      }
      let handleQuiz = async(content)=>{
 console.log(content)
-let newdata = await axios.post('http://localhost:8080/quiz',{content:content},{withCredentials:true})
+let newdata = await axios.post(`${URL}/quiz`,{content:content},{withCredentials:true})
 let realdata = newdata.data;
 console.log('this came from backend:'+JSON.stringify(realdata))
 setQuiz(realdata);
@@ -62,7 +62,7 @@ setSelected({});
       useEffect(() => {
         const fetchdata = async () => {
           
-            let data = await axios.get(`http://localhost:8080/courses/${id}`,{withCredentials:true});
+            let data = await axios.get(`${URL}/courses/${id}`,{withCredentials:true});
             let extracted =  data.data;
             if(extracted.redirect){
 navigate('/auth')
@@ -139,7 +139,7 @@ navigate('/auth')
     
         e.preventDefault();
         setMsg((prev)=>[...prev,{role:'user',msg:chatinput}])
-     let data = await axios.post('http://localhost:8080/chat',{input:chatinput,context:JSON.stringify(mod),history:JSON.stringify(msg)});
+     let data = await axios.post(`${URL}/chat`,{input:chatinput,context:JSON.stringify(mod),history:JSON.stringify(msg)});
      let realdata = await data.data;
       setChatinput('');
      console.log(`this is realdata:${JSON.stringify(realdata)}`)
