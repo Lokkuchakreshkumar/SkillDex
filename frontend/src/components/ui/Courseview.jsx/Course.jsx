@@ -27,8 +27,8 @@ const Course = () => {
       let [msg,setMsg] = useState([]);
       let [quiz,setQuiz]=useState([]);
       let [chatLoading,setChatLoading] = useState(false)
-      let [selected,setSelected]=useState({})
-      let [one,setOne] = useState(true)
+      let [selected,setSelected]=useState({});
+      let [one,setOne] = useState(true);
       let [chatinput,setChatinput] = useState('');
       let [loading, setLoading] = useState(true);
       let [quizloading,setQuizLoading] = useState(false);
@@ -355,11 +355,7 @@ navigate('/auth')
                       let Selected = selected[idx]
                       let lower = Selected?.lowidx === lowidx;
                       let Correct =  Selected?.isCorrect;
-                      return <div className="flex">
-                        
-                        
-                      
-                        
+                      return <div className="flex">  
                         <div  onClick={()=>checkAnswer(idx,lowidx,el.isCorrect)} className={`p-2 border border-blue-500 text-blue-400 rounded cursor-pointer m-2 ${lower?(Correct?'text-green-500':'text-red-800'):''}`} >{el.text}</div>
                       </div>
                     })
