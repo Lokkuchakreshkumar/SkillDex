@@ -404,7 +404,7 @@ else
   position="top-center"
   reverseOrder={false}
   gutter={8}
-  containerClassName="pt-24"
+  containerClassName="pt-24 mt-8"
   containerStyle={{}}
   toasterId="default"
   toastOptions={{

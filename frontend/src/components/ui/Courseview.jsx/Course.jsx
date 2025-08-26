@@ -167,7 +167,7 @@ navigate('/auth')
       {
         chat && <div className="sm:w-[30%] space w-[90%]  transition flex flex-col bg-white/10 backdrop-blur-3xl border border-gray-700
  top-15 rounded-xl items-center justify-between m-4 h-[89vh] sm:h-[90.1%] fixed z-100   ">
-       <div  className="flex w-full  justify-end  p-4"><RxCross2 onClick={handleCross} className="inline text-xl text-white hover:cursor-pointer"/></div>
+       <div  className="flex w-full  justify-end   p-4"><RxCross2 onClick={handleCross} className="inline text-xl text-white hover:cursor-pointer"/></div>
       <div className="overflow-y-auto flex flex-col w-full">
  {
       msg.map((msg)=>{
@@ -312,7 +312,7 @@ navigate('/auth')
           </div>
         )}
         {!loading && (
-          <div className="flex flex-col justify-center items-center text-lg p-4">
+          <div className="flex flex-col justify-center w-full items-center text-lg p-4">
             <div
               dangerouslySetInnerHTML={{ __html: content.data }}
               className="text-white [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
