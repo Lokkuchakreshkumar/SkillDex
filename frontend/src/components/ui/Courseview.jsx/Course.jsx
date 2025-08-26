@@ -312,10 +312,10 @@ navigate('/auth')
           </div>
         )}
         {!loading && (
-          <div className="flex flex-col justify-center break-words items-center text-lg p-4">
+          <div className="flex flex-col justify-center w-[98%] items-center text-lg p-4">
             <div
               dangerouslySetInnerHTML={{ __html: content.data }}
-              className="text-white [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
+              className="text-white min-w-full [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
             ></div>
             {
               !quizloading &&
