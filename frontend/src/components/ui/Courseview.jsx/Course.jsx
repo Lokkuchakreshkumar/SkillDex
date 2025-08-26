@@ -212,7 +212,7 @@ navigate('/auth')
         
       }
       <Nav/>
-      <div className="sm:w-[35%] w-full overflow-y-auto py-8 p-4 rounded-xl flex flex-col  bg-[#0E1219]   gap-y-4 sm:mt-15  ">
+      <div className="sm:w-[35%] w-full overflow-y-auto min-w-0 py-8 p-4 rounded-xl flex flex-col  bg-[#0E1219]   gap-y-4 sm:mt-15  ">
         {loading && (
           <div className="animate-pulse flex   mx-4 gap-y-4  flex-col sm:mt-24 ">
             <div className="h-3 bg-slate-800 w-full rounded-full"></div>
@@ -312,7 +312,7 @@ navigate('/auth')
           </div>
         )}
         {!loading && (
-          <div className="flex flex-col justify-center w-[98%] items-center text-lg p-4">
+          <div className="flex flex-col justify-center items-center text-lg p-4">
             <div
               dangerouslySetInnerHTML={{ __html: content.data }}
               className="text-white min-w-full [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
