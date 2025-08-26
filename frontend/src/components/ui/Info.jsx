@@ -4,7 +4,13 @@ import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 import image from "../../assets/Adobe Express - file (3).png"  
 import { useNavigate } from "react-router-dom";
 const Info = () => {
-  let URL = import.meta.env.VITE_URL
+   let env = 'production'
+   let URL;
+   if(env == "production"){
+     URL = import.meta.env.VITE_URL
+   }else{
+      URL = 'http://localhost:8080'
+   }
   const [formData,setFormData] = useState({
     purpose:"1",
     learnStyle:"1",

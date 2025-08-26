@@ -16,10 +16,17 @@ import { LineWave} from 'react-loader-spinner'
 const Course = () => {
   let navigate= useNavigate();
     let {id}= useParams();
-  let URL = import.meta.env.VITE_URL
+  let env = 'production'
+  let URL;
+  if(env == "production"){
+    URL = import.meta.env.VITE_URL
+  }else{
+     URL = 'http://localhost:8080'
+  }
     console.log('this is id:'+id)
       let [msg,setMsg] = useState([]);
       let [quiz,setQuiz]=useState([]);
+      let [chatLoading,setChatLoading] = useState(false)
       let [selected,setSelected]=useState({})
       let [one,setOne] = useState(true)
       let [chatinput,setChatinput] = useState('');
@@ -144,25 +151,46 @@ navigate('/auth')
         let handleSubmit = async(e)=>{
     
         e.preventDefault();
+        setChatLoading(true)
         setMsg((prev)=>[...prev,{role:'user',msg:chatinput}])
      let data = await axios.post(`${URL}/chat`,{input:chatinput,context:JSON.stringify(mod),history:JSON.stringify(msg)});
      let realdata = await data.data;
+    setChatLoading(false) 
       setChatinput('');
      console.log(`this is realdata:${JSON.stringify(realdata)}`)
      setMsg((prev)=>[...prev,{role:'ai',msg:realdata.answer}])
+     
     
       }
   return (
      <div className="sm:flex w-full relative  sm:overflow-y-hidden min-h-screen sm:h-screen bg-[#0B0F14]">
       {
         chat && <div className="sm:w-[30%] space w-[90%]  transition flex flex-col bg-white/10 backdrop-blur-3xl border border-gray-700
- top-15 rounded-xl items-center justify-between m-4 h-199 sm:h-[90.1%] fixed z-100   ">
+ top-15 rounded-xl items-center justify-between m-4 h-[89vh] sm:h-[90.1%] fixed z-100   ">
        <div  className="flex w-full  justify-end  p-4"><RxCross2 onClick={handleCross} className="inline text-xl text-white hover:cursor-pointer"/></div>
       <div className="overflow-y-auto flex flex-col w-full">
  {
-        msg.map((msg)=>{
+      msg.map((msg)=>{
           return <div className={`p-4  [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border mt-4 mb-4 mr-2 ml-3 [&_pre]:whitespace-pre-wrap [&_code]:break-words ${msg.role == 'user'?'bg-amber-400 text-black rounded-2xl px-4 py-2 self-end max-w-[70%]':'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl px-4 py-2 max-w-[70%] self-start'}`}><Markdown>{msg.msg}</Markdown></div>
         })
+      }
+       {
+        chatLoading && <div className="flex justify-center items-center w-[25%] ">
+              
+             <LineWave
+                visible={true}
+                height="100"
+                width="100"
+                color="#4fa94d"
+                ariaLabel="line-wave-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                firstLineColor=""
+                middleLineColor=""
+                lastLineColor=""
+                />
+           
+              </div>
        }
        <div ref={bottomRef}></div>
       </div>

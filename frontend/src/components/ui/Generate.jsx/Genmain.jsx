@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect,useRef,useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MdElectricalServices, MdKeyboardDoubleArrowUp } from "react-icons/md";
 import hljs from "highlight.js";
 import "highlight.js/styles/github-dark.css"; 
@@ -13,7 +13,14 @@ import { LineWave} from 'react-loader-spinner'
 
 
 const Genmain = () => {
-  let URL = import.meta.env.VITE_URL
+  let navigate = useNavigate();
+ let env = 'production'
+  let URL;
+  if(env == "production"){
+    URL = import.meta.env.VITE_URL
+  }else{
+     URL = 'http://localhost:8080'
+  }
   let [msg,setMsg] = useState([]);
 let [quiz, setQuiz] = useState([]); 
   let [one,setOne] = useState(true)
@@ -21,14 +28,17 @@ let [quiz, setQuiz] = useState([]);
   let [chatinput,setChatinput] = useState('');
   let [selected,setSelected]=useState({})
   let [loading, setLoading] = useState(true);
+  let [chatLoading,setChatLoading] = useState(false)
   let [chat,setChat] = useState(false);
   let [content, setContent] = useState(0);
   let [click, setClick] = useState(0);
   let [moduleindex, setIndex] = useState(null);
   let [real, setReal] = useState("");
   let [mod,setModules] = useState("");
+  let [copy,setCopy] = useState(false);
   const location = useLocation();
   const input = location.state?.input;
+  
   let handleChatInput = (e)=>{
    
      setChatinput(e.target.value);
@@ -62,11 +72,13 @@ setSelected({});
 
      }
   useEffect(() => {
+
     const fetchdata = async () => {
      
       
 
       if (input) {
+          
     
         let data = await axios.post(`${URL}/gen`, {
           input: input,
@@ -74,7 +86,14 @@ setSelected({});
         
         let extracted = await data.data;
 if(extracted.stop){
-  return
+  return 
+}
+if(extracted.copy){
+  console.log('copy found')
+ setCopy(true);
+ return setTimeout(()=>{
+  navigate('/dashboard');
+ },5000)
 }
         let moduled = Object.values(extracted.realmodules).flatMap((obj) => {
           return obj.topics.map((topic) => {
@@ -148,9 +167,11 @@ else
     let handleSubmit = async(e)=>{
 
     e.preventDefault();
+    setChatLoading(true)
     setMsg((prev)=>[...prev,{role:'user',msg:chatinput}])
  let data = await axios.post(`${URL}/chat`,{input:chatinput,context:JSON.stringify(mod),history:JSON.stringify(msg)});
  let realdata = await data.data;
+ setChatLoading(false);
   setChatinput('');
  console.log(`this is realdata:${JSON.stringify(realdata)}`)
  setMsg((prev)=>[...prev,{role:'ai',msg:realdata.answer}])
@@ -158,15 +179,43 @@ else
   }
   return (
     <div className="sm:flex w-full relative bg-[#0B0F14] sm:overflow-y-hidden min-h-screen sm:h-screen ">
-      {
+     {
+      copy && <div className="w-full">
+       <Nav/>
+       <div  className="flex justify-center items-center w-full h-screen">
+        <div className="text-center pt-24 text-white ">Already course is generated, go to dashboard to see.Your redirecting to Dashboard in 5 seconds </div>
+        </div>
+      </div>
+     }
+    
+{
+  !copy &&  <div className="sm:flex w-full relative bg-[#0B0F14] sm:overflow-y-hidden min-h-screen sm:h-screen "> {
         chat && <div className="sm:w-[30%] space w-[90%]  transition flex flex-col bg-white/10 backdrop-blur-3xl border border-gray-700
- top-15 rounded-xl items-center justify-between m-4 h-200 sm:h-[90.1%] fixed z-100   ">
+ top-15 rounded-xl items-center justify-between m-4 h-[89vh] sm:h-[90.1%] fixed z-100   ">
        <div  className="flex w-full  justify-end  p-4"><RxCross2 onClick={handleCross} className="inline text-xl text-white hover:cursor-pointer"/></div>
       <div className="overflow-y-auto flex flex-col w-full">
  {
         msg.map((msg)=>{
           return <div className={`p-4  [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border mt-4 mb-4 mr-2 ml-3 [&_pre]:whitespace-pre-wrap [&_code]:break-words ${msg.role == 'user'?'bg-amber-400 text-black rounded-2xl px-4 py-2 self-end max-w-[70%]':'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl px-4 py-2 max-w-[70%] self-start'}`}><Markdown>{msg.msg}</Markdown></div>
         })
+       }
+        {
+        chatLoading && <div className="flex justify-center items-center w-[25%] ">
+              
+             <LineWave
+                visible={true}
+                height="100"
+                width="100"
+                color="#4fa94d"
+                ariaLabel="line-wave-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                firstLineColor=""
+                middleLineColor=""
+                lastLineColor=""
+                />
+           
+              </div>
        }
        <div ref={bottomRef}></div>
       </div>
@@ -345,7 +394,10 @@ else
           </div>
         )}
       </div>
-    </div>
+        </div>
+}
+     </div>
+  
   );
 };
 

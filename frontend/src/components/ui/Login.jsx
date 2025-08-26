@@ -3,7 +3,13 @@ import Nav from '../ui/Nav.jsx'
 import img from "../../assets/generated-image.png"
 
 const Login = () => {
-  let URL = import.meta.env.VITE_URL
+    let env = 'production'
+    let URL;
+    if(env == "production"){
+      URL = import.meta.env.VITE_URL
+    }else{
+       URL = 'http://localhost:8080'
+    }
   return (
     <div className='bg-black  min-h-screen w-full flex justify-center items-center'>
       <Nav/>

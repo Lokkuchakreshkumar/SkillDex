@@ -8,7 +8,13 @@ import { useNavigate } from "react-router-dom";
 const Nav = (addr) => {
   let [link,setLink] = useState('')
   let [profile,setProfile] = useState(false)
-  let URL = import.meta.env.VITE_URL
+  let env = 'production'
+  let URL;
+  if(env == "production"){
+    URL = import.meta.env.VITE_URL
+  }else{
+     URL = 'http://localhost:8080'
+  }
   let navigate = useNavigate();
   useEffect(()=>{
     async function fn(){

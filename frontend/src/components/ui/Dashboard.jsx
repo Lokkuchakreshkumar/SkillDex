@@ -6,7 +6,14 @@ import { useNavigate } from 'react-router-dom'
 
 
 const Dashboard = () => {
-  let URL = import.meta.env.VITE_URL
+  let env = 'production'
+  let URL;
+  if(env == "production"){
+    URL = import.meta.env.VITE_URL
+  }else{
+     URL = 'http://localhost:8080'
+  }
+ 
   let navigate = useNavigate();
   let [data,setData] = useState({});
   let [loading,setLoading]=useState(true);
@@ -38,16 +45,16 @@ let first = await axios.get(`${URL}/`,{withCredentials:true})
       <Nav/>
 {
   !loading &&  <div className='flex flex-col'>
-         <div className='flex justify-center pt-24'>
-   <div className='text-white text-xl'>
+         <div className='flex justify-between pt-24'>
+   <div className='text-white text-xl m-2'>
 Welcome <span className='text-cyan-600 ml-2 text-4xl mt-4'>{data.name} !</span>
 
        </div>
-    
+     <div onClick={handleLogOut} className='p-4 m-2 hover:cursor-pointer max-w-fit bg-linear-to-r from-black to-white/10 text-white exo rounded-xl hover:bg-linear-to-r hover:from-black hover:to-white/50'>Logout</div>
     </div>
-    <div onClick={handleLogOut} className='p-4 max-w-fit bg-white text-black exo rounded-xl hover:bg-black hover:text-white'>Logout</div>
+   
        <div className='text-3xl text-white m-4 mt-8 justify-baseline'>
-  Courses(click on any course to see)
+  Courses<span className='text-white/50 text-lg'>(click on any course to see)</span>
 </div>
 <div className='w-full flex flex-wrap items-center' >
   {
