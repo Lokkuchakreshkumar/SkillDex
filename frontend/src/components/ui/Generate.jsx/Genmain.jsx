@@ -10,6 +10,7 @@ import Nav from '../Nav.jsx'
 import { RxCross2 } from "react-icons/rx";
 import Markdown from 'react-markdown'
 import { LineWave} from 'react-loader-spinner'
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const Genmain = () => {
@@ -179,6 +180,9 @@ else
   }
   return (
     <div className="sm:flex w-full relative bg-[#0B0F14] sm:overflow-y-hidden min-h-screen sm:h-screen ">
+      {
+        loading && toast('waiting')
+      }
      {
       copy && <div className="w-full">
        <Nav/>
@@ -396,6 +400,30 @@ else
       </div>
         </div>
 }
+<Toaster
+  position="top-center"
+  reverseOrder={false}
+  gutter={8}
+  containerClassName=""
+  containerStyle={{}}
+  toasterId="default"
+  toastOptions={{
+    className: '',
+    duration: 5000,
+    removeDelay: 1000,
+    style: {
+      background: '#363636',
+      color: '#fff',
+    },
+    success: {
+      duration: 3000,
+      iconTheme: {
+        primary: 'green',
+        secondary: 'black',
+      },
+    },
+  }}
+/>
      </div>
   
   );
