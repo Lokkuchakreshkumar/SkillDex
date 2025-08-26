@@ -404,12 +404,12 @@ else
   position="top-center"
   reverseOrder={false}
   gutter={8}
-  containerClassName=""
+  containerClassName="pt-24"
   containerStyle={{}}
   toasterId="default"
   toastOptions={{
     className: 'pt-24',
-    duration: 5000,
+    duration: 8000,
     removeDelay: 1000,
     style: {
       background: '#363636',
