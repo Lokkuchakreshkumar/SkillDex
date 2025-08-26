@@ -212,7 +212,7 @@ navigate('/auth')
         
       }
       <Nav/>
-      <div className="sm:w-[35%] w-full overflow-y-auto min-w-0 py-8 rounded-xl flex flex-col  bg-[#0E1219] p-4   gap-y-4 sm:mt-15  ">
+      <div className="sm:w-[35%] w-full overflow-y-auto py-8 rounded-xl flex flex-col  bg-[#0E1219] p-4   gap-y-4 sm:mt-15  ">
         {loading && (
           <div className="animate-pulse flex   mx-4 gap-y-4  flex-col sm:mt-24 ">
             <div className="h-3 bg-slate-800 w-full rounded-full"></div>
@@ -283,7 +283,7 @@ navigate('/auth')
         )}
       </div>
 
-      <div className="sm:w-[65%] mt-15 overflow-y-auto exo p-4 sm:p-8  w-full m-2 min-w-0 bg-[#111722] duration-500 rounded-xl ">
+      <div className="sm:w-[63%] mt-15 overflow-y-auto exo p-4 sm:p-8  w-[95%] min-w-0 bg-[#111722] duration-500 rounded-xl ">
         {loading && (
           <div className="animate-pulse flex  m-4 mx-8 gap-y-4  flex-col sm:mt-24 ">
             <div className="h-4 bg-slate-800 rounded-full"></div>
