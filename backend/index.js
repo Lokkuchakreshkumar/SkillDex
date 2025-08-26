@@ -10,18 +10,25 @@ import { convert } from 'html-to-text'
 
 const app = express();
 app.set('trust proxy', 1);
+let env = 'production'
 import promptBuilder from "./prompts/promptbuilder.js";
 import masterPrompt from "./prompts/masterprompt.js";
 import passport from "passport";
 import session from "express-session";
 dotenv.config();
 app.use(express.urlencoded({ extended: true }));
+const allowedOrigins = [
+  "http://localhost:5173",      
+  "https://myskilldex.vercel.app", 
+];
+
 app.use(
   cors({
-    origin: "https://myskilldex.vercel.app",
+    origin: allowedOrigins,
     credentials: true,
   })
 );
+
 async function main() {
   await mongoose.connect(process.env.MONGO_URI);
 }
@@ -37,7 +44,7 @@ app.use(
     cookie: {
       maxAge: 14 * 24 * 60 * 60 * 1000,
       sameSite: "None",
-      secure: true,
+      secure:true,
     },
   })
 );
@@ -62,13 +69,18 @@ passport.deserializeUser(async (id, done) => {
   console.log("Found user:");
   return done(null, founduser);
 });
-
+let call;
+if(env == 'production'){
+  call ='https://skilldex.onrender.com/auth/google/callback'
+}else{
+  call = 'http://localhost:8080/auth/google/callback'
+}
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://skilldex.onrender.com/auth/google/callback",
+      callbackURL: call,
     },
     async function (accessToken, refreshToken, profile, done) {
       let newuser = await User.findOne({ googleId: profile.id });
@@ -115,9 +127,19 @@ app.get(
   (req, res) => {
     console.log("Authentication successful!");
     if (req.user.question_done) {
-      res.redirect("https://myskilldex.vercel.app/");
+        if(env == 'production'){
+       res.redirect("https://myskilldex.vercel.app/");
+     }
+     else{
+      res.redirect('http://localhost:5173/')
+     }
     } else {
-      res.redirect("https://myskilldex.vercel.app/info");
+     if(env == 'production'){
+       res.redirect("https://myskilldex.vercel.app/info");
+     }
+     else{
+      res.redirect('http://localhost:5173/info')
+     }
     }
   }
 );
@@ -140,7 +162,17 @@ app.post("/gen", async (req, res) => {
       console.log(req.body.input);
       user_status.isGenerating = true;
       await user_status.save();
-      try {
+     let courses = user_status.courses;
+     for(let i = 0;i<courses.length;i++){
+      if(courses[i].name === req.body.input){
+        console.log('copy found');
+        user_status.isGenerating = false;
+        await user_status.save();
+        return res.json({copy:true});
+        
+      }
+     }
+       try {
         const ai = new GoogleGenAI({
           apiKey: process.env.GEMINI_API_KEY1,
         });
