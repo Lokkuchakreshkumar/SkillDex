@@ -268,7 +268,13 @@ app.post("/chat", async (req, res) => {
 app.post('/dashboard', async (req, res) => {
   res.send('dashboard')
 })
-
+app.get('/logout',async(req,res)=>{
+  if(req.user){
+    req.logout();
+  return res.json({logout:true});
+  }
+  res.json({logout:false})
+})
 app.post('/quiz', async (req, res) => {
   console.log(req.body.content)
   const text = convert(req.body.content)

@@ -12,6 +12,15 @@ const Dashboard = () => {
   let [loading,setLoading]=useState(true);
 let handleClick = (id)=>{
 navigate(`/courses/${id}`)
+
+}
+let handleLogOut = async()=>{
+  let newdata = await axios.get('/logout');
+  let realdata = newdata.data;
+  if(realdata.logout){
+  return  navigate('/auth')
+  }
+  console.log('logout failed')
 }
   useEffect(()=>{
     async function fn(){
@@ -36,6 +45,7 @@ Welcome <span className='text-cyan-600 ml-2 text-4xl mt-4'>{data.name} !</span>
        </div>
     
     </div>
+    <div onClick={handleLogOut} className='p-4 bg-white text-black exo rounded-xl hover:bg-black hover:text-white'>Logout</div>
        <div className='text-3xl text-white m-4 mt-8 justify-baseline'>
   Courses(click on any course to see)
 </div>
