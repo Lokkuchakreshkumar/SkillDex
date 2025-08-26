@@ -283,7 +283,7 @@ navigate('/auth')
         )}
       </div>
 
-      <div className="sm:w-[63%] mt-15 overflow-y-auto exo p-4 sm:p-8  w-[95%] min-w-0 bg-[#111722] duration-500 rounded-xl ">
+      <div className="sm:w-[65%] mt-15 overflow-y-auto exo p-4 sm:p-8  w-full box-border min-w-0 bg-[#111722] duration-500 rounded-xl ">
         {loading && (
           <div className="animate-pulse flex  m-4 mx-8 gap-y-4  flex-col sm:mt-24 ">
             <div className="h-4 bg-slate-800 rounded-full"></div>
