@@ -45,7 +45,7 @@ Welcome <span className='text-cyan-600 ml-2 text-4xl mt-4'>{data.name} !</span>
        </div>
     
     </div>
-    <div onClick={handleLogOut} className='p-4 min-w-fit bg-white text-black exo rounded-xl hover:bg-black hover:text-white'>Logout</div>
+    <div onClick={handleLogOut} className='p-4 max-w-fit bg-white text-black exo rounded-xl hover:bg-black hover:text-white'>Logout</div>
        <div className='text-3xl text-white m-4 mt-8 justify-baseline'>
   Courses(click on any course to see)
 </div>
