@@ -265,16 +265,20 @@ app.post("/chat", async (req, res) => {
   let toreturn = await main(prompt);
   res.json({ answer: toreturn });
 });
-app.post('/dashboard', async (req, res) => {
+app.post('/dashboard', async (req, res,next) => {
   res.send('dashboard')
 })
 app.get('/logout',async(req,res)=>{
-  if(req.user){
-    req.logout();
-  return res.json({logout:true});
-  }
-  res.json({logout:false})
-})
+if(req.user){
+  req.logout((err)=>{
+    if(err){
+      console.log(err);
+      return next(err);
+    }
+    res.json({logout:true});
+  })
+}
+});
 app.post('/quiz', async (req, res) => {
   console.log(req.body.content)
   const text = convert(req.body.content)
