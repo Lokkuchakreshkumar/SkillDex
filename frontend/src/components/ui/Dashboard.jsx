@@ -15,7 +15,7 @@ navigate(`/courses/${id}`)
 
 }
 let handleLogOut = async()=>{
-  let newdata = await axios.get('/logout');
+  let newdata = await axios.get(`${URL}/logout`);
   let realdata = newdata.data;
   if(realdata.logout){
   return  navigate('/auth')
