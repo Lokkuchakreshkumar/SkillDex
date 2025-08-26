@@ -181,7 +181,7 @@ else
   return (
     <div className="sm:flex w-full relative bg-[#0B0F14] sm:overflow-y-hidden min-h-screen sm:h-screen ">
       {
-        loading && !copy && toast('Generating your course (1–3 min). It’ll appear on your dashboard once ready.')
+        loading && !copy && toast('⏳ Generating your course (1–3 min). It’ll appear on your dashboard once ready.')
       }
      {
       copy && <div className="w-full">
@@ -408,7 +408,7 @@ else
   containerStyle={{}}
   toasterId="default"
   toastOptions={{
-    className: '',
+    className: 'pt-24',
     duration: 5000,
     removeDelay: 1000,
     style: {
