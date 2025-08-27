@@ -20,7 +20,7 @@ export default defineConfig({
             sizes: "192x192"
           },
           {
-            src: "/favicon.ico",
+            src: "`/favicon.ico",
             type: "image/x-icon",
             sizes: "512x512"
           }
