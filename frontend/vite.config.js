@@ -16,12 +16,12 @@ export default defineConfig({
         icons: [
           {
             src: "../frontend/public/favicon.ico",
-            type: "image/png",
+            type: "image/x-icon",
             sizes: "192x192"
           },
           {
             src: "../frontend/public/favicon.ico",
-            type: "image/png",
+            type: "image/x-icon",
             sizes: "512x512"
           }
         ]
