@@ -12,7 +12,7 @@ export default defineConfig({
       manifest: {
         name: "SkillDex to define you",
         short_name: "SkillDex",
-        start_url: ".",
+        start_url: "/",
         display: "standalone",
         background_color: "#000000",
         theme_color: "#000000",
