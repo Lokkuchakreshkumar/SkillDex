@@ -19,18 +19,18 @@ manifest: {
   theme_color: "#000000",
   icons: [
     {
-      src: "/favicon.ico",
-      type: "image/x-icon",
+      src: "/output-onlinepngtools.png",
+      type: "image/png",
       sizes: "192x192"
     },
     {
-      src: "/favicon.ico",
-      type: "image/x-icon",
+      src: "/output-onlinepngtools.png",
+      type: "image/png",
       sizes: "512x512"
     },
     {
-      src: "/favicon.ico",
-      type: "image/x-icon",
+      src: "/output-onlinepngtools.png",
+      type: "image/png",
       sizes: "512x512",
       purpose: "maskable"
     }
