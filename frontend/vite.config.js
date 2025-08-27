@@ -18,13 +18,13 @@ export default defineConfig({
         theme_color: "#000000",
         icons: [
           {
-            src: "../frontend/public/favicon.ico",
-            type: "image/x-icon",
+            src: "..frontend/public/Adobe Express - file (1).png",
+            type: "image/png",
             sizes: "192x192"
           },
           {
-            src: "../frontend/public/favicon.ico",
-            type: "image/x-icon",
+            src: "..frontend/public/Adobe Express - file (1).png",
+            type: "image/png",
             sizes: "512x512"
           }
         ]
