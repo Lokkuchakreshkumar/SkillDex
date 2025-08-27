@@ -2,12 +2,15 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
+
+
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [react(),tailwindcss(),
-     VitePWA({
+      VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: "SkillDex",
+        name: "SkillDex to define you",
         short_name: "SkillDex",
         start_url: ".",
         display: "standalone",
@@ -15,7 +18,7 @@ export default defineConfig({
         theme_color: "#000000",
         icons: [
           {
-            src: "/favicon.ico",
+            src: "../frontend/public/favicon.ico",
             type: "image/x-icon",
             sizes: "192x192"
           },
