@@ -34,7 +34,7 @@ const Info = () => {
     }
   }
   return (
-    <div className="new h-screen flex flex-col-reverse sm:flex-row justify-center items-center">
+    <div className="new h-screen flex p-4 flex-col-reverse sm:flex-row justify-center items-center">
       <form
         action=""
         onSubmit={handleForm}
