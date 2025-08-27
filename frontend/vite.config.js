@@ -15,12 +15,12 @@ export default defineConfig({
         theme_color: "#000000",
         icons: [
           {
-            src: "../frontend/public/favicon.ico",
+            src: "/favicon.ico",
             type: "image/x-icon",
             sizes: "192x192"
           },
           {
-            src: "../frontend/public/favicon.ico",
+            src: "/favicon.ico",
             type: "image/x-icon",
             sizes: "512x512"
           }
