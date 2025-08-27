@@ -34,7 +34,7 @@ const Info = () => {
     }
   }
   return (
-    <div className="new h-screen flex p-4 flex-col-reverse sm:flex-row justify-center items-center">
+    <div className="new min-h-screen w-full flex p-4 flex-col-reverse sm:flex-row justify-center items-center">
       <form
         action=""
         onSubmit={handleForm}
@@ -195,7 +195,7 @@ rounded-2xl">
         
 </div>
       </form>
-      <div className="sm:w-[40%] w-[80%] flex justify-center items-center">
+      <div className="sm:w-[40%] w-[80%] m-4 flex justify-center items-center">
         <img src={image} alt="" />
       </div>
     </div>
