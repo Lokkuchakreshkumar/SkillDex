@@ -19,18 +19,18 @@ manifest: {
   theme_color: "#000000",
   icons: [
     {
-      src: "/Adobe Express - file (1).png",
-      type: "image/png",
+      src: "/favicon.ico",
+      type: "image/x-icon",
       sizes: "192x192"
     },
     {
-      src: "/Adobe Express - file (1).png",
-      type: "image/png",
+      src: "/favicon.ico",
+      type: "image/x-icon",
       sizes: "512x512"
     },
     {
-      src: "/Adobe Express - file (1).png",
-      type: "image/png",
+      src: "/favicon.ico",
+      type: "image/x-icon",
       sizes: "512x512",
       purpose: "maskable"
     }
