@@ -359,7 +359,7 @@ Generate quiz on this topic: ${text}`
   console.log(index)
   let model = keys[index]
   const response = await model.models.generateContent({
-    model: "gemini-2.5-flash",
+    model: "gemini-2.5-flash-lite",
     contents: quiz_prompt,
   });
 
