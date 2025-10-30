@@ -205,23 +205,20 @@ app.post("/gen", async (req, res) => {
           new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY15 }),
         ];
 
-        const moduleTasks = real.map(async (obj, index) => {
-          const actualprompt = promptBuilder(obj, user_status.questions);
-          console.log('this is actual prompt' + actualprompt);
-          const indextouse = keys[index % keys.length];
-          return indextouse.models
-            .generateContent({
-              model: "gemini-2.5-flash",
-              contents: actualprompt,
-            })
-            .then((res) => {
-              return {
-                index,
-                answer: res.text.replace(/```(?:json)?\s*|```/g, ""),
-              };
-            })
-            .catch((err) => err.message);
-        });
+     const moduleTasks = real.map(async (obj, index) => {
+  try {
+    const actualprompt = promptBuilder(obj, user_status.questions);
+    const model = keys[index % keys.length];
+    const res = await model.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: actualprompt,
+    });
+    return { index, answer: res.text.replace(/```(?:json)?\s*|```/g, "") };
+  } catch (err) {
+    console.error(`Module ${index} failed:`, err.message);
+    return { index, answer: null, error: err.message };
+  }
+});
         const results = await Promise.all(moduleTasks);
         let realmodules = {};
         for (let i = 0; i < results.length; i++) {
