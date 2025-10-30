@@ -233,7 +233,7 @@ app.post("/gen", async (req, res) => {
             console.log("some error occured some where");
           }
         }
-        console.log(realmodules);
+        
         const sizeInBytes = Buffer.byteLength(JSON.stringify(realmodules), "utf8");
         const sizeInKB = sizeInBytes / 1024;
         console.log(`JSON size: ${sizeInKB.toFixed(2)} KB`);
