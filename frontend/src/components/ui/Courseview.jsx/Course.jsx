@@ -311,10 +311,10 @@ navigate('/auth')
             <div className="h-4 bg-slate-800 rounded-full"></div>
           </div>
         )}
-        {!loading && (
+        {!loading && content && (
           <div className="flex flex-col justify-center items-center text-lg p-4">
             <div
-              dangerouslySetInnerHTML={{ __html: content.data }}
+              dangerouslySetInnerHTML={{ __html: content?.data }}
               className="text-white w-full [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
             ></div>
             {
