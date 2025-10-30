@@ -210,7 +210,7 @@ app.post("/gen", async (req, res) => {
     const actualprompt = promptBuilder(obj, user_status.questions);
     const model = keys[index % keys.length];
     const res = await model.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-flash-lite",
       contents: actualprompt,
     });
     return { index, answer: res.text.replace(/```(?:json)?\s*|```/g, "") };
