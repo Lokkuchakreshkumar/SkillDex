@@ -233,7 +233,7 @@ else
       }
     
       {
-        !loading &&<div className="group fixed top-24 left-4"> <div onClick={handleChat} className=" sm:w-16 hover:cursor-pointer w-12 h-12  sm:h-16  flex justify-center items-center  bg-linear-to-tr from-blue-400 to-teal-800   backdrop-blur-md rounded-full ">
+        !loading && <div className="group fixed top-24 left-4"> <div onClick={handleChat} className=" sm:w-16 hover:cursor-pointer w-12 h-12  sm:h-16  flex justify-center items-center  bg-linear-to-tr from-blue-400 to-teal-800   backdrop-blur-md rounded-full ">
 <HiMiniSparkles className=" text-2xl inline"/>
         </div>
         <div className=" bg-black rounded-2xl p-3 text- text-white my-4   opacity-0 group-hover:opacity-100 left-4 transition">Chat with SkillDex AI</div>
@@ -340,10 +340,10 @@ else
             <div className="h-4 bg-slate-800 rounded-full"></div>
           </div>
         )}
-        {!loading && (
+        {!loading && content &&  (
           <div className="flex flex-col justify-center items-center text-lg p-4">
             <div
-              dangerouslySetInnerHTML={{ __html: content.data }}
+              dangerouslySetInnerHTML={{ __html: content?.data }}
               className="text-white [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:max-w-full [&_pre]:box-border [&_pre]:whitespace-pre-wrap [&_code]:break-words"
             ></div>
             {
