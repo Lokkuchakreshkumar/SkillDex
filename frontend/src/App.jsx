@@ -10,7 +10,9 @@ import Scroll from './components/ui/Scroll.jsx'
 import Faq from './components/ui/Faq.jsx'
 import Quote from './components/ui/Quote.jsx'
 import Footer from './components/ui/Footer.jsx'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+
 const App = () => {
     let [loading,setLoading] = useState(true);
    let env = 'production'
@@ -46,6 +48,17 @@ const App = () => {
    
   },[])
   return (
+<HelmetProvider>
+      <Helmet>
+        <title>Skilldex - Learn anything, Instantly</title>
+        <meta name="description" content="Skilldex is a platform to learn anything, instantly. Founded by Lokku Chakresh Kumar, an entrepreneur with a strong foundation in Web Development." />
+        <meta name="keywords" content="Skilldex, KLED, GoSynk, Chakresh, Lokku Chakresh Kumar, Web Development, Learning" />
+        <meta name="author" content="Lokku Chakresh Kumar" />
+        <meta property="og:title" content="Skilldex - Learn anything, Instantly" />
+        <meta property="og:description" content="Skilldex is a platform to learn anything, instantly. Founded by Lokku Chakresh Kumar, the founder of KLED with more than 5.8k users and founder of GoSynk." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://skilldex.live" />
+      </Helmet>
 <div>
       {
       !loading && 
@@ -87,7 +100,7 @@ const App = () => {
     }
  
   </div>
-
+</HelmetProvider>
   )
 }
 
