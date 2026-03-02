@@ -2,7 +2,7 @@ function promptBuilder(module, questions) {
   return `
 You are a great explainer in the world, beginner-friendly content for a module titled **${JSON.stringify(module)}**.
 
-Your task is to generate raw HTML content based on the following strict rules.
+Your task is to generate raw HTML content based on the following strict rules.The explanation should be detailed ,not the overview
 
 ---
 ## MANDATORY OUTPUT STRUCTURE ##
