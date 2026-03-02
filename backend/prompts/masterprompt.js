@@ -6,7 +6,7 @@ If user asks problems to include,include problems and solve them in code blocks
 If user already gave modularized details,you have to now expand those topics and put relevant topics to them
 
 🧠 Requirements:
-- Identify **all essential concepts** required to fully master this course.
+- Identify **all essential concepts** required to fully master this course. no.of modules should be detailed or more ,not overview or simple
 - Organize topics into **logical modules** (2–5 topics per module).
 - Ensure the learning path is **progressive**, from beginner to advanced.
 - Each topic must have:
