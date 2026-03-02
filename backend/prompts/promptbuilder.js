@@ -1,6 +1,6 @@
 function promptBuilder(module, questions) {
   return `
-You are a senior university professor, preparing well-structured, beginner-friendly content for a module titled **${JSON.stringify(module)}**.
+You are a great explainer in the world, beginner-friendly content for a module titled **${JSON.stringify(module)}**.
 
 Your task is to generate raw HTML content based on the following strict rules.
 
@@ -28,6 +28,8 @@ Your task is to generate raw HTML content based on the following strict rules.
     </code>
     </pre>
     \`\`\`
+    ***- Use <pre><code> only for actual programming examples.
+- If there is no programming example, do not use <pre><code> at all.***
 
 2.  **For short, inline code references** (e.g., inside a paragraph): You MUST use a simple \`<code>\` tag styled for a dark theme.
     \`\`\`html
