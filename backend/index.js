@@ -179,7 +179,7 @@ app.post("/gen", async (req, res) => {
 
         async function main(prompt) {
           const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
+            model: "gemini-3-flash-preview",
             contents: prompt,
           });
           return response.text.replace(/```(?:json)?\s*|```/g, "");
@@ -210,7 +210,7 @@ app.post("/gen", async (req, res) => {
     const actualprompt = promptBuilder(obj, user_status.questions);
     const model = keys[index % keys.length];
     const res = await model.models.generateContent({
-      model: "gemini-2.5-flash-lite",
+      model: "gemini-3-flash-preview",
       contents: actualprompt,
     });
     return { index, answer: res.text.replace(/```(?:json)?\s*|```/g, "") };
@@ -285,7 +285,7 @@ app.post("/chat", async (req, res) => {
     console.log("entered the main");
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-lite",
+      model: "gemini-3-flash-preview",
       contents: prompt,
     });
     console.log(response.text);
